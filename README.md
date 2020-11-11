@@ -1,3 +1,5 @@
+**在线示例**： [Oasis Playground](https://oasis-engine.github.io/0.1/playground/index.html)
+
 ### 1. 安装
 
 #### 1.1 初始化
@@ -116,3 +118,13 @@ const {
 ```
 
 module 名字映射以及转换规则可以在`transform.js/modules` 和`transform.js/replace` 进行配置
+
+### 5. 资源
+
+#### 5.1 线下
+
+如果使用 vite 本地开发调试，可以直接将资源放在`/public/static`中 ,代码中使用`/static/***`使用即可
+
+#### 5.2 线上
+
+线上版本需要使用 cdn 资源。即代码使用 `https://***` 格式。 **推荐**：可以将优秀的模型、纹理等资源集中到 [Basement- Oasis Hub](https://yuyan-base.antfin-inc.com/OasisHub/file/detail/5fab5817c3dc8a0547aa9325?page=1&type=others) 进行统一管理
