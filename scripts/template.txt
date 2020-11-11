@@ -1,0 +1,25 @@
+import * as miniprogram from "@ali/miniprogram-adapter/dist/miniprogram";
+
+Page({
+  onLoad() {
+    my._createCanvas({
+      id: "canvas",
+      success: (canvas) => {
+        const info = my.getSystemInfoSync();
+        const { windowWidth, windowHeight, pixelRatio, titleBarHeight } = info;
+        canvas.width = windowWidth * pixelRatio;
+        canvas.height = (windowHeight - titleBarHeight) * pixelRatio;
+        miniprogram.registerCanvas(canvas);
+      },
+    });
+  },
+  onTouchStart(e) {
+    miniprogram.dispatchTouchStart(e);
+  },
+  onTouchMove(e) {
+    miniprogram.dispatchTouchMove(e);
+  },
+  onTouchEnd(e) {
+    miniprogram.dispatchTouchEnd(e);
+  },
+})

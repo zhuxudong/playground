@@ -1,0 +1,60 @@
+{
+  "private": true,
+  "name": "oasis-playground",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "init": "tnpm install --by=yarn",
+    "reinstall": "rm -rf node_modules && tnpm run init",
+    "link": "tnpm link ../oasis3d/packages/*",
+    "dev:vite": "vite",
+    "dev": "demosify --serve",
+    "watch": "cd ../oasis3d && tnpm run watch",
+    "build": "demosify --prod",
+    "b:mini": "node scripts/to-mini-program.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.alipay-inc.com:fetest/fe_hook_test.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@oasis-engine/controls": "^0.1.0",
+    "@oasis-engine/framebuffer-picker": "^0.1.0",
+    "dat.gui": "^0.7.7",
+    "oasis-engine": "^0.1.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.1",
+    "@babel/generator": "^7.12.1",
+    "@babel/parser": "^7.12.1",
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
+    "@babel/preset-typescript": "^7.12.1",
+    "@babel/standalone": "^7.12.6",
+    "@babel/traverse": "^7.12.1",
+    "@demosify/core": "^0.6.0",
+    "@rollup/plugin-babel": "^5.2.1",
+    "fs-extra": "^9.0.1",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.11",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.0.5",
+    "replace-in-file": "^6.1.0",
+    "sass": "^1.26.10",
+    "snowpack": "^2.6.4",
+    "typescript": "^3.9.6",
+    "vite": "^1.0.0-beta.11"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "prettier --write"
+    ]
+  }
+}
