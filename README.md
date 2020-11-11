@@ -1,61 +1,118 @@
-### 安装
+### 1. 安装
+
+#### 1.1 初始化
 
 ```
 tnpm run init
 ```
 
-### 调试
+#### 1.2 link
+
+```
+tnpm run link
+```
+
+#### 1.3 重装
+
+```
+tnpm run reinstall
+```
+
+### 2. 本地开发
+
+#### 2.1 线上版本开发
+
+> 该方式适用于线上效果开发。如果需要联调引擎源码，请使用 vite 开发
 
 ```
 tnpm run dev
+```
+
+#### 2.2 vite 开发
+
+> 保留了原来的 vite 开发流程，方便 link Oasis 仓库进行源码调试
+
+```
+tnpm run dev:vite
 ```
 
 如果需要调试 Oasis 引擎源码，请先 link 再进行调试，即：
 
 ```
 tnpm run link
-tnpm run dev
-
-# link 只需要一次，以后只需要 dev 即可
-tnpm run dev
 ```
 
-如果需要取消 link ，运行：
+如果需要监听引擎源码的变化，即同时调试引擎和游乐场，可运行：
 
 ```
-tnpm run reinstall
+tnpm run watch
 ```
 
-如果需要监听引擎源码的变化，即同时调试引擎和游乐场，运行：
+> 注意： 默认 Oasis 引擎仓库在 ../oasis3d，若不是，请自行修改 script#watch
 
-```
-tnpm run dev:watch
-```
-
-> 注意： 默认 Oasis 引擎仓库在 ../oasis3d，若不是，请自行修改 script
-
-### 发布
-
-push 到 master 分支后会自动进行校验和发布，如果需要手动 build，可执行：
+### 3. 发布
 
 ```
 npm run build
 ```
 
-### 缩略图模式
+### 4. 配置
 
-在案例下添加一张 avatar.jpg | avatar.png ,即可自动切换缩略图模式
+#### 4.1 全局配置
 
-### 连通 Riddle 等代码平台
+- 在 `/.demosrc.js` 下进行全局配置，具体参考 [demosify](http://www.demosify.com/#/zh-cn/basic?id=demosrc)
 
-在项目下新建 `code.json`,目前只支持 [riddle](https://riddle.alibaba-inc.com/),配置如下：
+- 依赖包全部以 umd 包 CDN 打入，如有新增包依赖，在 `demosrc.js/globalPackages` 中追加即可。
+
+#### 4.2 目录配置
+
+在 `/demos/.demoList.json` 中进行分目录配置，具体参考 [demosify](http://www.demosify.com/#/zh-cn/basic?id=demolist)
+
+#### 4.3 具体 demo 配置
+
+在 `/demos/***/config.js` 中针对单个 demo 进行配置，具体参考 [demosify](http://www.demosify.com/#/zh-cn/basic?id=configjs)
+
+#### 4.4 transform 配置
+
+为了方便本地开发+发布使用同一套 ESM 代码,游乐场的 ts 代码实际经过了 `/demos/transform.js` 的转换：
+
+- typescript -> js
+- esm -> window
+
+转换前：
 
 ```
-{
-    "riddle":"https://*****"
-}
+import { OrbitControl } from "@oasis-engine/controls";
+import { FramebufferPicker } from "@oasis-engine/framebuffer-picker";
+import {
+  AssetType,
+  Camera,
+  EnvironmentMapLight,
+  Logger,
+  MeshRenderer,
+  SystemInfo,
+  Vector3,
+  Vector4,
+  WebGLEngine
+} from "oasis-engine";
 ```
 
-### 注意
+转换后：
 
-目前 build 使用 snowpack 是因为 vite 还不支持 mpa 打包，但是已在开发中，后续将统一使用 vite 环境
+```
+const { OrbitControl } = window["o3Controls"];
+const { FramebufferPicker } = window["o3FramebufferPicker"];
+const {
+  AssetType,
+  Camera,
+  EnvironmentMapLight,
+  Logger,
+  MeshRenderer,
+  SystemInfo,
+  Vector3,
+  Vector4,
+  WebGLEngine
+} = window["o3"];
+```
+
+module 名字映射以及转换规则可以在`transform.js/modules` 和`transform.js/replace` 进行配置
