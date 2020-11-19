@@ -18,5 +18,9 @@
   {
     "label": "帧拾取",
     "src": "framebuffer-picker"
+  },
+  {
+    "label": "环境反射探针",
+    "src": "probe-reflection"
   }
 ]
