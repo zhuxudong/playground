@@ -78,5 +78,8 @@ const pages = fs
 fs.outputFileSync(path.resolve(__dirname, "homepage/page.json"), JSON.stringify(pages));
 
 module.exports = {
-  open: true
+  open: true,
+  optimizeDeps: {
+		exclude: ["oasis-engine"]
+	},
 };
