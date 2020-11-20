@@ -60,11 +60,7 @@ const pages = fs
       }
     });
 
-    const ejs = templateStr
-      .replaceEJS("title", pageName)
-      .replaceEJS("url", `./${pageName}.js`)
-      .replaceEJS("iconShow", codeUrl ? "icon-show" : "")
-      .replaceEJS("codeUrl", codeUrl);
+    const ejs = templateStr.replaceEJS("title", pageName).replaceEJS("url", `./${pageName}.js`);
 
     fs.outputFileSync(path.resolve(__dirname, OUT_PATH, pageName + ".html"), ejs);
     return {
@@ -80,6 +76,6 @@ fs.outputFileSync(path.resolve(__dirname, "homepage/page.json"), JSON.stringify(
 module.exports = {
   open: true,
   optimizeDeps: {
-		exclude: ["oasis-engine"]
-	},
+    exclude: ["oasis-engine"]
+  }
 };
