@@ -22,5 +22,9 @@
   {
     "label": "环境反射探针",
     "src": "probe-reflection"
+  },
+  {
+    "label": "视频纹理",
+    "src": "video-texture"
   }
 ]
