@@ -6,7 +6,7 @@ const path = require("path");
 const chalk = require("chalk");
 const inquirer = require("inquirer");
 const copydir = require("copy-dir");
-const regExp = /([a-z]|[-])+/;
+const regExp = /^([a-z-])+$/g;
 
 /**
  * 询问新建 demo 名称
