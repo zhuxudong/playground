@@ -10,8 +10,8 @@ const scene = engine.sceneManager.activeScene;
 const rootEntity = scene.createRootEntity();
 
 //-- create camera
-const cameraNode = rootEntity.createChild("camera_node");
-cameraNode.addComponent(Camera);
-cameraNode.addComponent(OrbitControl);
+const cameraEntity = rootEntity.createChild("camera_entity");
+cameraEntity.addComponent(Camera);
+cameraEntity.addComponent(OrbitControl);
 
 engine.run();
