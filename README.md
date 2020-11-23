@@ -52,6 +52,12 @@ tnpm run watch
 
 > 注意： 默认 Oasis 引擎仓库在 ../oasis3d，若不是，请自行修改 script#watch
 
+#### 2.3 新建 demo
+
+```
+tnpm run add-demo
+```
+
 ### 3. 发布
 
 ```
