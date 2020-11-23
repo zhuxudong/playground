@@ -40,7 +40,7 @@ class CustomCubeGeometry {
     	-size, size, -size, -1, 0, 0, -size, size, size, -1, 0, 0, -size, -size, size, -1, 0, 0, -size, -size, -size, -1, 0, 0,
     	// right
     	size, size, -size, 1, 0, 0, size, size, size, 1, 0, 0, size, -size, size, 1, 0, 0, size, -size, -size, 1, 0, 0,
-    	// fornt
+    	// front
     	-size, size, size, 0, 0, 1, size, size, size, 0, 0, 1, size, -size, size, 0, 0, 1, -size, -size, size, 0, 0, 1,
     	// back
     	-size, size, -size, 0, 0, -1, size, size, -size, 0, 0, -1, size, -size, -size, 0, 0, -1, -size, -size, -size, 0, 0, -1]);
@@ -50,13 +50,13 @@ class CustomCubeGeometry {
     const indices: Uint16Array = new Uint16Array([
     	// up
     	0, 2, 1, 2, 0, 3,
-    	// donw
+    	// down
     	4, 6, 7, 6, 4, 5,
     	// left
     	8, 10, 9, 10, 8, 11,
     	// right
     	12, 14, 15, 14, 12, 13,
-    	// fornt
+    	// front
     	16, 18, 17, 18, 16, 19,
     	// back
     	20, 22, 23, 22, 20, 21]);
