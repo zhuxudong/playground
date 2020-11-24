@@ -1,5 +1,5 @@
 import { OrbitControl } from "@oasis-engine/controls";
-import { Camera, SystemInfo, WebGLEngine } from "oasis-engine";
+import { Camera, SystemInfo, Vector3, WebGLEngine } from "oasis-engine";
 
 //-- create engine object
 const engine = new WebGLEngine("o3-demo");
@@ -11,6 +11,7 @@ const rootEntity = scene.createRootEntity();
 
 //-- create camera
 const cameraEntity = rootEntity.createChild("camera_entity");
+cameraEntity.transform.position = new Vector3(0, 0, 50);
 cameraEntity.addComponent(Camera);
 cameraEntity.addComponent(OrbitControl);
 
