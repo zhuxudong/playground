@@ -57,6 +57,7 @@ tnpm run watch
 ```
 tnpm run add-demo
 ```
+按照提示输入完英文名字和中文名字后，即可在`/demos/*****/index.ts` 进行开发
 
 ### 3. 发布
 
