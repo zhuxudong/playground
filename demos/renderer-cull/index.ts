@@ -58,8 +58,8 @@ const state = {
 
 class ObserverScript extends Script {
   onUpdate() {
-    state.cube1 = cubeRenderer.isVisible ? "正常渲染" : "视锥体裁剪";
-    state.cube2 = cubeRenderer2.isVisible ? "正常渲染" : "视锥体裁剪";
+    state.cube1 = cubeRenderer.isCulled ? "视锥体裁剪" : "正常渲染";
+    state.cube2 = cubeRenderer2.isCulled ? "视锥体裁剪" : "正常渲染";
   }
 }
 
