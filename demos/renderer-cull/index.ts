@@ -50,6 +50,15 @@ cubeRenderer.material = material;
 cubeRenderer2.geometry = geometry;
 cubeRenderer2.material = material2;
 
+// rotate
+class RotationScript extends Script {
+  onUpdate() {
+    this.entity.transform.rotateXYZ(1, 1, 1);
+  }
+}
+cube.addComponent(RotationScript);
+cube2.addComponent(RotationScript);
+
 // observe renderer-cull
 const state = {
   cube1: "正常渲染",
