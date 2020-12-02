@@ -6,5 +6,6 @@
   { "label": "帧拾取", "src": "framebuffer-picker" },
   { "label": "环境反射探针", "src": "probe-reflection" },
   { "label": "视频纹理", "src": "video-texture" },
-  { "label": "自定义几何体", "src": "buffer-geometry" }
+  { "label": "自定义几何体", "src": "buffer-geometry" },
+  { "label": "动画渐变过渡", "src": "animation-cross-fade" }
 ]
