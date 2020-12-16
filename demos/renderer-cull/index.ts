@@ -2,6 +2,7 @@ import { FreeControl } from "@oasis-engine/controls";
 import * as dat from "dat.gui";
 import {
   Camera,
+  SphereGeometry,
   ConstantMaterial,
   CuboidGeometry,
   GeometryRenderer,
@@ -40,6 +41,7 @@ material.emission = new Vector4(1, 0, 0, 1);
 const material2 = new ConstantMaterial(engine, "box2");
 material2.emission = new Vector4(0, 0, 1, 1);
 const geometry = new CuboidGeometry(engine, 5, 5, 5);
+const sphereGeometry = new SphereGeometry(engine, 5);
 
 const cubeRenderer = cube.addComponent(GeometryRenderer);
 const cubeRenderer2 = cube2.addComponent(GeometryRenderer);
@@ -47,7 +49,7 @@ const cubeRenderer2 = cube2.addComponent(GeometryRenderer);
 cubeRenderer.geometry = geometry;
 cubeRenderer.material = material;
 
-cubeRenderer2.geometry = geometry;
+cubeRenderer2.geometry = sphereGeometry;
 cubeRenderer2.material = material2;
 
 // rotate
@@ -76,5 +78,5 @@ rootEntity.addComponent(ObserverScript);
 
 const folder = gui.addFolder("移动视角，观察视锥体裁剪情况");
 folder.add(state, "cube1").name("红色立方体").listen();
-folder.add(state, "cube2").name("蓝色立方体").listen();
+folder.add(state, "cube2").name("蓝色球体").listen();
 folder.open();
