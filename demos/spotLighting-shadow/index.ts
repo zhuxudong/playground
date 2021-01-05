@@ -10,9 +10,12 @@ import {
   SystemInfo,
   Vector3,
   Vector4,
-  WebGLEngine
+  WebGLEngine,
+  Material,
+  Shader,
+  Logger
 } from "oasis-engine";
-
+Logger.enable();
 const target = new Vector3(0, -3, 0);
 const up = new Vector3(0, 1, 0);
 
@@ -30,7 +33,7 @@ class Move extends Script {
     let x = Math.cos(this.time) * this.range;
     let y = Math.sin(this.time) * this.range * 0.2 + this.y;
     let z = Math.cos(this.time) * this.range;
-    this.entity.position = new Vector3(x, y, z);
+    this.entity.transform.position = new Vector3(x, y, z);
   }
 }
 
@@ -56,12 +59,14 @@ function createCuboidGeometry(name, position, rotation, w, h, d) {
   let cubeRenderer = obj.addComponent(GeometryRenderer);
   cubeRenderer.geometry = new CuboidGeometry(rootEntity.engine, w, h, d);
   cubeRenderer.material = mtl;
-  cubeRenderer["recieveShadow"] = true;
+  // cubeRenderer["recieveShadow"] = true;
 }
 
-let mtl = new BlinnPhongMaterial(engine, "TestMaterial");
-mtl.diffuse = new Vector4(0.1, 0.9, 0.8, 1);
-
+// let mtl = new BlinnPhongMaterial(engine, "TestMaterial");
+// mtl.diffuse = new Vector4(0.1, 0.9, 0.8, 1);
+let mtl = new Material(engine, Shader.get("blinn-phong"));
+mtl.shaderData.setColor("u_diffuse", new Vector4(0.1, 0.9, 0.8, 1));
+mtl.shaderData.enableMacro("O3_NEED_WORLDPOS");
 //-- create light entity
 let lighthouse = rootEntity.createChild("lighthouse");
 let light1 = lighthouse.createChild("light1");
@@ -74,17 +79,17 @@ spotLight.intensity = 1.0;
 spotLight.distance = 80;
 spotLight.decay = 0;
 spotLight.angle = Math.PI / 12;
-spotLight.penumbra = 0.2;
-spotLight["enableShadow"] = true;
-spotLight["shadow"].bias = 0.0001;
-spotLight["shadow"].intensity = 0.2;
+spotLight.penumbra = 2;
+// spotLight["enableShadow"] = true;
+// spotLight["shadow"].bias = 0.0001;
+// spotLight["shadow"].intensity = 0.2;
 
-let lgtMtl = new ConstantMaterial(engine, "test_mtl1");
-lgtMtl.emission = new Vector4(0.85, 0.85, 0.85, 1);
+// let lgtMtl = new ConstantMaterial(engine, "test_mtl1");
+// lgtMtl.emission = new Vector4(0.85, 0.85, 0.85, 1);
 
 let sphereRenderer3 = light1.addComponent(GeometryRenderer);
 sphereRenderer3.geometry = new SphereGeometry(engine, 0.1);
-sphereRenderer3.material = lgtMtl;
+sphereRenderer3.material = mtl;
 
 //-- create geometry
 createCuboidGeometry("cubiod1", [0, -3, 0], [0, 0, 0], 10, 0.1, 10);
