@@ -64,7 +64,7 @@ function createCuboidGeometry(name, position, rotation, w, h, d) {
 
 // let mtl = new BlinnPhongMaterial(engine, "TestMaterial");
 // mtl.diffuse = new Vector4(0.1, 0.9, 0.8, 1);
-let mtl = new Material(engine, Shader.get("blinn-phong"));
+let mtl = new Material(engine, Shader.find("blinn-phong"));
 mtl.shaderData.setColor("u_diffuse", new Vector4(0.1, 0.9, 0.8, 1));
 mtl.shaderData.enableMacro("O3_NEED_WORLDPOS");
 //-- create light entity
