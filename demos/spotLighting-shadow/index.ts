@@ -1,7 +1,7 @@
 import {
   BlinnPhongMaterial,
   Camera,
-  ConstantMaterial,
+  Color,
   CuboidGeometry,
   GeometryRenderer,
   Script,
@@ -9,13 +9,9 @@ import {
   SpotLight,
   SystemInfo,
   Vector3,
-  Vector4,
-  WebGLEngine,
-  Material,
-  Shader,
-  Logger
+  WebGLEngine
 } from "oasis-engine";
-Logger.enable();
+
 const target = new Vector3(0, -3, 0);
 const up = new Vector3(0, 1, 0);
 
@@ -59,14 +55,11 @@ function createCuboidGeometry(name, position, rotation, w, h, d) {
   let cubeRenderer = obj.addComponent(GeometryRenderer);
   cubeRenderer.geometry = new CuboidGeometry(rootEntity.engine, w, h, d);
   cubeRenderer.material = mtl;
-  // cubeRenderer["recieveShadow"] = true;
+  cubeRenderer["recieveShadow"] = true;
 }
 
-// let mtl = new BlinnPhongMaterial(engine, "TestMaterial");
-// mtl.diffuse = new Vector4(0.1, 0.9, 0.8, 1);
-let mtl = new Material(engine, Shader.find("blinn-phong"));
-mtl.shaderData.setColor("u_diffuse", new Vector4(0.1, 0.9, 0.8, 1));
-mtl.shaderData.enableMacro("O3_NEED_WORLDPOS");
+let mtl = new BlinnPhongMaterial(engine);
+mtl.diffuseColor = new Color(0.1, 0.9, 0.8, 1);
 //-- create light entity
 let lighthouse = rootEntity.createChild("lighthouse");
 let light1 = lighthouse.createChild("light1");
@@ -74,18 +67,11 @@ light1.addComponent(Move);
 light1.addComponent(LookAtFocus);
 
 let spotLight = light1.addComponent(SpotLight);
-spotLight.color = new Vector3(1, 1, 1);
-spotLight.intensity = 1.0;
-spotLight.distance = 80;
-spotLight.decay = 0;
 spotLight.angle = Math.PI / 12;
 spotLight.penumbra = 2;
-// spotLight["enableShadow"] = true;
-// spotLight["shadow"].bias = 0.0001;
-// spotLight["shadow"].intensity = 0.2;
-
-// let lgtMtl = new ConstantMaterial(engine, "test_mtl1");
-// lgtMtl.emission = new Vector4(0.85, 0.85, 0.85, 1);
+spotLight["enableShadow"] = true;
+spotLight["shadow"].bias = 0.0001;
+spotLight["shadow"].intensity = 0.2;
 
 let sphereRenderer3 = light1.addComponent(GeometryRenderer);
 sphereRenderer3.geometry = new SphereGeometry(engine, 0.1);
