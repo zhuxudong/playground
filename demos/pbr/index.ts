@@ -4,6 +4,7 @@ import {
   AmbientLight,
   AssetType,
   Camera,
+  Color,
   DirectLight,
   EnvironmentMapLight,
   SkyBox,
@@ -43,7 +44,7 @@ dirFolder.addColor(directLightColor, "color").onChange((v) => (directLight.color
 dirFolder.add(directLight, "intensity", 0, 1);
 
 const ambient = rootEntity.addComponent(AmbientLight);
-ambient.color = new Vector3(0.2, 0.2, 0.2);
+ambient.color = new Color(0.2, 0.2, 0.2, 1);
 
 //-- create camera
 let cameraNode = rootEntity.createChild("camera_node");
@@ -71,7 +72,7 @@ Promise.all([
       type: AssetType.TextureCube
     })
     .then((cubeMap) => {
-      envLight.diffuseMap = cubeMap;
+      envLight.diffuseTexture = cubeMap;
     }),
   engine.resourceManager
     .load<TextureCubeMap>({
@@ -86,7 +87,7 @@ Promise.all([
       type: AssetType.TextureCube
     })
     .then((cubeMap) => {
-      envLight.specularMap = cubeMap;
+      envLight.specularTexture = cubeMap;
       rootEntity.addComponent(SkyBox).skyBoxMap = cubeMap;
     })
 ]).then(() => {

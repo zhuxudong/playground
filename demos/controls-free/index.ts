@@ -4,13 +4,13 @@
 import { FreeControl } from "@oasis-engine/controls";
 import {
   Camera,
-  ConstantMaterial,
+  BlinnPhongMaterial,
   CuboidGeometry,
   GeometryRenderer,
   PlaneGeometry,
   PrimitiveTopology,
-  Vector4,
-  WebGLEngine
+  WebGLEngine,
+  Color
 } from "oasis-engine";
 
 const engine = new WebGLEngine("o3-demo");
@@ -28,16 +28,15 @@ camera.farClipPlane = 2000;
 const controler = cameraNode.addComponent(FreeControl);
 controler.movementSpeed = 100;
 controler.rotateSpeed = 1;
-controler.jumpY = 50;
 
 const geometry = new CuboidGeometry(engine, 50, 50, 50);
-const material = new ConstantMaterial(engine, "box");
-material.emission = new Vector4(0.5, 0.6, 0.6, 1);
+const material = new BlinnPhongMaterial(engine);
+material.emissiveColor = new Color(0.5, 0.6, 0.6, 1);
 
 let groundGeometry = new PlaneGeometry(engine, 2000, 2000, 100, 100);
 groundGeometry.subGeometry.topology = PrimitiveTopology.LineStrip;
-let groundMaterial = new ConstantMaterial(engine, "groundMat");
-groundMaterial.emission = new Vector4(1, 1, 1, 1);
+let groundMaterial = new BlinnPhongMaterial(engine);
+groundMaterial.emissiveColor = new Color(1, 1, 1, 1);
 
 // meshes in scene
 for (let i = 0; i < 100; i++) {

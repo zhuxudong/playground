@@ -1,15 +1,15 @@
 import { FreeControl } from "@oasis-engine/controls";
 import * as dat from "dat.gui";
 import {
+  BlinnPhongMaterial,
   Camera,
-  SphereGeometry,
-  ConstantMaterial,
+  Color,
   CuboidGeometry,
   GeometryRenderer,
   Script,
+  SphereGeometry,
   SystemInfo,
   Vector3,
-  Vector4,
   WebGLEngine
 } from "oasis-engine";
 const gui = new dat.GUI();
@@ -36,10 +36,10 @@ const cube = rootEntity.createChild("cube1");
 const cube2 = rootEntity.createChild("cube2");
 cube.transform.position = new Vector3(-10, 0, 0);
 cube2.transform.position = new Vector3(10, 0, 0);
-const material = new ConstantMaterial(engine, "box");
-material.emission = new Vector4(1, 0, 0, 1);
-const material2 = new ConstantMaterial(engine, "box2");
-material2.emission = new Vector4(0, 0, 1, 1);
+const material = new BlinnPhongMaterial(engine);
+material.emissiveColor = new Color(1, 0, 0, 1);
+const material2 = new BlinnPhongMaterial(engine);
+material2.emissiveColor = new Color(0, 0, 1, 1);
 const geometry = new CuboidGeometry(engine, 5, 5, 5);
 const sphereGeometry = new SphereGeometry(engine, 5);
 

@@ -73,8 +73,8 @@ engine.resourceManager.load(ResourceList).then((res) => {
     }
   }
 
-  envLight.diffuseMap = res[1];
-  envLight.specularMap = res[2];
+  envLight.diffuseTexture = res[1];
+  envLight.specularTexture = res[2];
 
   // framebuffer picker
   let lastMaterial;
