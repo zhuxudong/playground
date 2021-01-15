@@ -6,6 +6,7 @@ import {
   BufferGeometry,
   BufferUsage,
   Camera,
+  Color,
   DirectLight,
   Engine,
   GeometryRenderer,
@@ -92,7 +93,7 @@ canvas.height = window.innerHeight * SystemInfo.devicePixelRatio;
 const lightEntity = rootEntity.createChild("DirectLight");
 const ambient = lightEntity.addComponent(AmbientLight);
 const directLight = lightEntity.addComponent(DirectLight);
-ambient.color = new Vector3(0.2, 0.2, 0.2);
+ambient.color = new Color(0.2, 0.2, 0.2);
 directLight.color = new Vector3(0.3, 0.4, 0.4);
 
 // create camera.
@@ -106,9 +107,9 @@ cameraEntity.addComponent(Camera);
 const cubeEntity = rootEntity.createChild("Cube");
 const cubeRenderer = cubeEntity.addComponent(GeometryRenderer);
 const cubeGeometry = CustomCubeGeometry.create(engine, 1.0);
-const material = new BlinnPhongMaterial(engine, "Material");
+const material = new BlinnPhongMaterial(engine);
 cubeEntity.transform.rotateXYZ(0, 60, 0);
-material.ambient = new Vector4(1, 1, 1, 1);
+material.ambientColor = new Color(1, 1, 1, 1);
 cubeRenderer.geometry = cubeGeometry;
 cubeRenderer.material = material;
 
