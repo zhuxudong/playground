@@ -8,7 +8,7 @@ import {
   DirectLight,
   EnvironmentMapLight,
   GeometryRenderer,
-  LambertMaterial,
+  BlinnPhongMaterial,
   Script,
   SkyBox,
   SphereGeometry,
@@ -16,7 +16,8 @@ import {
   TextureCubeMap,
   Vector3,
   Vector4,
-  WebGLEngine
+  WebGLEngine,
+  Color
 } from "oasis-engine";
 
 //-- create engine object
@@ -38,7 +39,7 @@ const directLight = directLightNode.addComponent(DirectLight);
 directLight.color = new Vector3(1, 1, 1);
 
 const ambient = rootEntity.addComponent(AmbientLight);
-ambient.color = new Vector3(0.2, 0.2, 0.2);
+ambient.color = new Color(0.2, 0.2, 0.2);
 
 //-- create camera
 const cameraEntity = rootEntity.createChild("camera_node");
@@ -69,7 +70,7 @@ async function loadModel() {
         type: AssetType.TextureCube
       })
       .then((cubeMap) => {
-        envLight.diffuseMap = cubeMap;
+        envLight.diffuseTexture = cubeMap;
       }),
     engine.resourceManager
       .load<TextureCubeMap>({
@@ -84,7 +85,7 @@ async function loadModel() {
         type: AssetType.TextureCube
       })
       .then((cubeMap) => {
-        envLight.specularMap = cubeMap;
+        envLight.specularTexture = cubeMap;
         skybox.skyBoxMap = cubeMap;
       })
   ]).then(() => {});
@@ -100,12 +101,12 @@ function createSphere(material) {
 }
 
 function reflectionDemo() {
-  const sphere1Mat = new LambertMaterial(engine, "sphere1Mat");
-  sphere1Mat.diffuse = new Vector4(1, 0, 0, 1);
-  const sphere2Mat = new LambertMaterial(engine, "sphere2Mat");
-  sphere2Mat.diffuse = new Vector4(0, 1, 0, 1);
-  const sphere3Mat = new LambertMaterial(engine, "sphere3Mat");
-  sphere3Mat.diffuse = new Vector4(0, 0, 1, 1);
+  const sphere1Mat = new BlinnPhongMaterial(engine);
+  sphere1Mat.diffuseColor = new Color(1, 0, 0, 1);
+  const sphere2Mat = new BlinnPhongMaterial(engine);
+  sphere2Mat.diffuseColor = new Color(0, 1, 0, 1);
+  const sphere3Mat = new BlinnPhongMaterial(engine);
+  sphere3Mat.diffuseColor = new Color(0, 0, 1, 1);
 
   const sphere1 = createSphere(sphere1Mat);
   const sphere2 = createSphere(sphere2Mat);
@@ -123,18 +124,6 @@ function reflectionDemo() {
 
   let probe = null;
 
-  function resetProbe(width, height, samples) {
-    probe && probe.destroy();
-    probe = rootEntity.addComponent(CubeProbe);
-    probe.init({
-      width,
-      height,
-      samples,
-      // renderAll: true
-      renderList: [sphere1Mat, sphere2Mat, sphere3Mat, skybox.material]
-    });
-  }
-
   // debug
   const state = {
     enableAnimate: true,
@@ -143,9 +132,10 @@ function reflectionDemo() {
     samples: 1
   };
 
-  resetProbe(state.size, state.size, state.samples);
-  envLight.specularMap = probe.cubeTexture;
-
+  probe = cameraEntity.addComponent(CubeProbe);
+  probe.onTextureChange = (texture) => {
+    envLight.specularTexture = texture;
+  };
   gui
     .add(state, "enableAnimate")
     .onChange((v) => {
@@ -163,8 +153,7 @@ function reflectionDemo() {
   gui
     .add(state, "size", 1, 2048)
     .onChange((size) => {
-      resetProbe(size, size, state.samples);
-      envLight.specularMap = probe.cubeTexture;
+      probe.width = probe.height = size;
     })
     .name("分辨率");
 
@@ -175,8 +164,7 @@ function reflectionDemo() {
       .add(state, "samples", 0, max, 1)
       .name("MSAA")
       .onChange((samples) => {
-        resetProbe(state.size, state.size, samples);
-        envLight.specularMap = probe.cubeTexture;
+        probe.antiAliasing = samples;
       });
   }
 }
