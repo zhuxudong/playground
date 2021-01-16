@@ -3,21 +3,21 @@ import * as dat from "dat.gui";
 import {
   AmbientLight,
   AssetType,
+  BlinnPhongMaterial,
   Camera,
+  Color,
   CubeProbe,
   DirectLight,
   EnvironmentMapLight,
   GeometryRenderer,
-  BlinnPhongMaterial,
+  Layer,
   Script,
   SkyBox,
   SphereGeometry,
   SystemInfo,
   TextureCubeMap,
   Vector3,
-  Vector4,
-  WebGLEngine,
-  Color
+  WebGLEngine
 } from "oasis-engine";
 
 //-- create engine object
@@ -133,6 +133,12 @@ function reflectionDemo() {
   };
 
   probe = cameraEntity.addComponent(CubeProbe);
+  probe.probeLayer = Layer.Layer30;
+  sphere1.layer = Layer.Layer30;
+  sphere2.layer = Layer.Layer30;
+  sphere3.layer = Layer.Layer30;
+  rootEntity.layer = Layer.Layer30;
+
   probe.onTextureChange = (texture) => {
     envLight.specularTexture = texture;
   };
