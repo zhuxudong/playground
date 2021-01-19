@@ -11,13 +11,13 @@ import {
   Vector3,
   WebGLEngine
 } from "oasis-engine";
-
+import { OrbitControl } from "@oasis-engine/controls";
 const target = new Vector3(0, -3, 0);
 const up = new Vector3(0, 1, 0);
 
 class Move extends Script {
   time = 0;
-  y = 2;
+  y = 3;
   range = 5;
 
   constructor(node) {
@@ -48,14 +48,15 @@ const scene = engine.sceneManager.activeScene;
 const rootEntity = scene.createRootEntity();
 
 // Logger.enable();
-function createCuboidGeometry(name, position, rotation, w, h, d) {
+function createCuboidGeometry(name, position, rotation, w, h, d, castShadow: boolean = false) {
   let obj = rootEntity.createChild(name);
   obj.position = new Vector3(...position);
   obj.transform.rotation = new Vector3(rotation[0], rotation[0], rotation[0]);
   let cubeRenderer = obj.addComponent(GeometryRenderer);
   cubeRenderer.geometry = new CuboidGeometry(rootEntity.engine, w, h, d);
   cubeRenderer.material = mtl;
-  cubeRenderer["recieveShadow"] = true;
+  cubeRenderer["recieveShadow"] = !castShadow;
+  cubeRenderer["castShadow"] = castShadow;
 }
 
 let mtl = new BlinnPhongMaterial(engine);
@@ -82,12 +83,14 @@ createCuboidGeometry("cubiod1", [0, -3, 0], [0, 0, 0], 10, 0.1, 10);
 createCuboidGeometry("cubiod2", [5, -2, 0], [0, 0, 0], 0.1, 2, 10);
 createCuboidGeometry("cubiod3", [-5, -2, 0], [0, 0, 0], 0.1, 2, 10);
 createCuboidGeometry("cubiod4", [0, -2, -5], [0, 0, 0], 10, 2, 0.1);
+createCuboidGeometry("cubiod-cast-shadow", [0, -1, 0], [0, 0, 0], 1, 1, 1, true);
 
 //-- create camera
 let cameraNode = rootEntity.createChild("camera_node");
 cameraNode.transform.position = new Vector3(0, 5, 17);
 cameraNode.transform.lookAt(new Vector3(), new Vector3(0, 1, 0));
 cameraNode.addComponent(Camera);
+cameraNode.addComponent(OrbitControl);
 
 //-- run
 engine.run();
