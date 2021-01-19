@@ -32,10 +32,10 @@ function addGUI() {
   const cameraFolder = gui.addFolder("camera cullingMask");
   cameraFolder.open();
   const constMap = {
-    EveryThing: o3.MaskList.EVERYTHING,
-    Mask1: o3.MaskList.MASK1,
-    Mask2: o3.MaskList.MASK2,
-    Mask3: o3.MaskList.MASK3
+    EveryThing: o3.Layer.Everything,
+    Layer1: o3.Layer.Layer1,
+    Layer2: o3.Layer.Layer2,
+    Layer3: o3.Layer.Layer3
   };
   const cameraController = cameraFolder.add({ cullingMask: "EveryThing" }, "cullingMask", Object.keys(constMap));
   cameraController.onChange((v) => {
@@ -46,7 +46,7 @@ function addGUI() {
   boxFolder.open();
   const boxController = boxFolder.add({ layer: "EveryThing" }, "layer", Object.keys(constMap));
   boxController.onChange((v) => {
-    renderer.layer = constMap[v];
+    renderer.entity.layer = constMap[v];
   });
 }
 
