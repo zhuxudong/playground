@@ -3,7 +3,7 @@ const pkg = require("./package.json");
 module.exports = {
   output: {
     dir: "dist", // 配置构建部署时输出的目录，默认dist目录
-    publicUrl: `/0.1/playground/` // 配置构建输出的资源根目录，默认是'/'
+    publicUrl: `/0.2/playground/` // 配置构建输出的资源根目录，默认是'/'
   },
   name: "Oasis Playground",
   version: `v${pkg.version}`,
