@@ -1,6 +1,6 @@
 import { OrbitControl } from "@oasis-engine/controls";
 import * as dat from "dat.gui";
-import { Animation, Camera, DirectLight, SystemInfo, Vector3, Vector4, WebGLEngine } from "oasis-engine";
+import { Animation, Camera, Color, DirectLight, SystemInfo, Vector3, WebGLEngine } from "oasis-engine";
 
 const gui = new dat.GUI();
 
@@ -32,7 +32,7 @@ engine.resourceManager
     const animationNameList = animations.map(({ name }) => name);
 
     materials.forEach((material) => {
-      material.baseColorFactor = new Vector4(1, 1, 1, 1);
+      material.baseColor = new Color(1, 1, 1, 1);
     });
 
     rootEntity.addChild(defaultSceneRoot);

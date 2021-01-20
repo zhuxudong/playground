@@ -94,7 +94,7 @@ const lightEntity = rootEntity.createChild("DirectLight");
 const ambient = lightEntity.addComponent(AmbientLight);
 const directLight = lightEntity.addComponent(DirectLight);
 ambient.color = new Color(0.2, 0.2, 0.2);
-directLight.color = new Vector3(0.3, 0.4, 0.4);
+directLight.color = new Color(0.3, 0.4, 0.4);
 
 // create camera.
 const cameraEntity = rootEntity.createChild("Camera");
