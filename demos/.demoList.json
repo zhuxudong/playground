@@ -9,5 +9,6 @@
   { "label": "自定义几何体", "src": "buffer-geometry" },
   { "label": "视锥体剔除", "src": "renderer-cull" },
   { "label": "相机渲染遮罩", "src": "camera-culling-mask" },
-  { "label": "动画渐变过渡", "src": "animation-cross-fade" }
+  { "label": "动画渐变过渡", "src": "animation-cross-fade" },
+  { "label": "自定义材质-水", "src": "shader-water" }
 ]
