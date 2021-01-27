@@ -6,8 +6,8 @@ const cwd = process.cwd();
 
 const root = path.join(cwd, "demos");
 
-const targetRoot = path.join(cwd, "oasis3d-playground-mini/pages/playground/dist-miniprogram");
-const appJsonPath = path.join(cwd, "oasis3d-playground-mini/app.json");
+const targetRoot = path.join(cwd, "oasis-playground-mini/pages/playground/dist-miniprogram");
+const appJsonPath = path.join(cwd, "oasis-playground-mini/app.json");
 
 fs.rmdirSync(targetRoot, { recursive: true });
 
