@@ -5,9 +5,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "init": "npm install --by=yarn",
-    "reinstall": "rm -rf node_modules && npm run init",
-    "link": "npm link ../engine/packages/*",
+    "link": "sudo npm link ../engine/packages/*",
     "dev:vite": "vite",
     "dev": "demosify --serve",
     "build": "demosify --prod",
