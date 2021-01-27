@@ -5,12 +5,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "init": "tnpm install --by=yarn",
-    "reinstall": "rm -rf node_modules && tnpm run init",
-    "link": "tnpm link ../oasis3d/packages/*",
+    "init": "npm install --by=yarn",
+    "reinstall": "rm -rf node_modules && npm run init",
+    "link": "npm link ../engine/packages/*",
     "dev:vite": "vite",
     "dev": "demosify --serve",
-    "watch": "cd ../oasis3d && tnpm run watch",
     "build": "demosify --prod",
     "b:mini": "node scripts/to-mini-program.js",
     "add-demo": "node scripts/add-demo.js"
