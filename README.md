@@ -5,19 +5,13 @@
 #### 1.1 初始化
 
 ```
-npm run init
+npm install
 ```
 
 #### 1.2 link
 
 ```
 npm run link
-```
-
-#### 1.3 重装
-
-```
-npm run reinstall
 ```
 
 ### 2. 本地开发
