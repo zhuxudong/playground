@@ -7,7 +7,7 @@ module.exports = {
   },
   name: "Oasis Playground",
   version: `v${pkg.version}`,
-  homePage: "https://oasis3d.alipay.com/",
+  homePage: "https://oasis-engine.github.io",
   boxTheme: "monokai", // 配置代码编辑器的主题
   // 可选主题: active4d, allHallowsEve, amy, blackboard, brillianceBlack,
   // brillianceDull, chromeDevtools, cloudsMidnight, clouds, cobalt,
