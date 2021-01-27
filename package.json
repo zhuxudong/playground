@@ -5,7 +5,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "link": "sudo npm link ../engine/packages/*",
+    "link": "sudo npm link ../engine/packages/* --no-package-lock",
     "dev:vite": "vite",
     "dev": "demosify --serve",
     "build": "demosify --prod",
