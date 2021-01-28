@@ -2,9 +2,9 @@ import transform from "../transform";
 
 export default async () => {
   const [htmlCode, jsCode, cssCode] = await Promise.all([
-    import("template.html"),
+    import("!raw-loader!../../template.html"),
     import("!raw-loader!./index.ts"),
-    import("template.css")
+    import("!raw-loader!../../template.css")
   ]);
 
   return {
