@@ -9,7 +9,6 @@ import {
   MeshRenderer,
   SystemInfo,
   Vector3,
-
   WebGLEngine
 } from "oasis-engine";
 
