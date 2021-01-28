@@ -7,6 +7,7 @@ import {
   Color,
   DirectLight,
   EnvironmentMapLight,
+  request,
   SkyBox,
   SystemInfo,
   Texture2D,
@@ -61,9 +62,11 @@ Promise.all([
       const video = document.getElementById("video") as HTMLVideoElement;
       const texture = new Texture2D(engine, 960, 540, undefined, false);
 
-      material.preRender = () => {
+      function setImage() {
         texture.setImageSource(video);
-      };
+        requestAnimationFrame(setImage);
+      }
+      setImage();
 
       material.baseColorTexture = texture;
     }),
