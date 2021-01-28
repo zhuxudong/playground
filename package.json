@@ -1,16 +1,13 @@
 {
   "private": true,
   "name": "oasis-playground",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "init": "tnpm install --by=yarn",
-    "reinstall": "rm -rf node_modules && tnpm run init",
-    "link": "tnpm link ../engine/packages/*",
+    "link": "sudo npm link ../engine/packages/* --no-package-lock",
     "dev:vite": "vite",
     "dev": "demosify --serve",
-    "watch": "cd ../oasis3d && tnpm run watch",
     "build": "demosify --prod",
     "b:mini": "node scripts/to-mini-program.js",
     "add-demo": "node scripts/add-demo.js"
@@ -22,10 +19,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@oasis-engine/controls": "^0.1.0",
-    "@oasis-engine/framebuffer-picker": "^0.1.0",
+    "@oasis-engine/controls": "^0.2.0",
+    "@oasis-engine/framebuffer-picker": "^0.2.0",
     "dat.gui": "^0.7.7",
-    "oasis-engine": "^0.1.0"
+    "oasis-engine": "^0.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.1",

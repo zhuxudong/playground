@@ -36,7 +36,6 @@ const envLight = envLightNode.addComponent(EnvironmentMapLight);
 
 const directLightNode = rootEntity.createChild("dir_light");
 const directLight = directLightNode.addComponent(DirectLight);
-directLight.color = new Vector3(1, 1, 1);
 
 const ambient = rootEntity.addComponent(AmbientLight);
 ambient.color = new Color(0.2, 0.2, 0.2);

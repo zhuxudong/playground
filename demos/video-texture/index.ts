@@ -7,6 +7,7 @@ import {
   Color,
   DirectLight,
   EnvironmentMapLight,
+  request,
   SkyBox,
   SystemInfo,
   Texture2D,
@@ -23,8 +24,8 @@ engine.canvas.height = window.innerHeight * SystemInfo.devicePixelRatio;
 let scene = engine.sceneManager.activeScene;
 const rootEntity = scene.createRootEntity();
 
-const color2glColor = (color) => new Vector3(color[0] / 255, color[1] / 255, color[2] / 255);
-const glColor2Color = (color) => new Vector3(color[0] * 255, color[1] * 255, color[2] * 255);
+const color2glColor = (color) => new Color(color[0] / 255, color[1] / 255, color[2] / 255);
+const glColor2Color = (color) => new Color(color[0] * 255, color[1] * 255, color[2] * 255);
 const gui = new dat.GUI();
 gui.domElement.style = "position:absolute;top:0px;left:50vw";
 
@@ -38,7 +39,6 @@ envFolder.add(envLight, "diffuseIntensity", 0, 1);
 let directLightColor = { color: [255, 255, 255] };
 let directLightNode = rootEntity.createChild("dir_light");
 let directLight = directLightNode.addComponent(DirectLight);
-directLight.color = new Vector3(1, 1, 1);
 let dirFolder = gui.addFolder("DirectionalLight1");
 dirFolder.add(directLight, "enabled");
 dirFolder.addColor(directLightColor, "color").onChange((v) => (directLight.color = color2glColor(v)));
@@ -62,9 +62,11 @@ Promise.all([
       const video = document.getElementById("video") as HTMLVideoElement;
       const texture = new Texture2D(engine, 960, 540, undefined, false);
 
-      material.preRender = () => {
+      function setImage() {
         texture.setImageSource(video);
-      };
+        requestAnimationFrame(setImage);
+      }
+      setImage();
 
       material.baseColorTexture = texture;
     }),
