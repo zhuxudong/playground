@@ -50,7 +50,7 @@ const icons = [
 
 for (let i = 0, l = icons.length; i < l; ++i) {
   setTimeout(() => {
-    const spriteEntity = rootEntity.createChild("sprite");
+    const spriteEntity = rootEntity.createChild(`sprite_${i}`);
     spriteEntity.transform.position = new Vector3(0, 0, 0);
     const spriteComponent = spriteEntity.addComponent(SpriteRenderer);
     engine.resourceManager
