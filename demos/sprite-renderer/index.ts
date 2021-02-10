@@ -36,16 +36,16 @@ cameraEntity.addComponent(OrbitControl);
 
 //-- create sprite renderer
 const icons = [
-  "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*pPt7SLBqbngAAAAAAAAAAAAAARQnAQ",
   "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*d3N9RYpcKncAAAAAAAAAAAAAARQnAQ",
-  "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*gm3sR5Vom_cAAAAAAAAAAAAAARQnAQ",
-  "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*jqbYQo7vKQQAAAAAAAAAAAAAARQnAQ",
-  "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*4OteRIxm4LMAAAAAAAAAAAAAARQnAQ",
-  "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*rOT2R77UPIYAAAAAAAAAAAAAARQnAQ",
-  "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*suOoQ6ioeFkAAAAAAAAAAAAAARQnAQ",
-  "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*GKxNSqS6H3cAAAAAAAAAAAAAARQnAQ",
-  "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*OcvMR6FlVV4AAAAAAAAAAAAAARQnAQ",
-  "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*dbE8R6CQ4FAAAAAAAAAAAAAAARQnAQ"
+  "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*d3N9RYpcKncAAAAAAAAAAAAAARQnAQ",
+  "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*d3N9RYpcKncAAAAAAAAAAAAAARQnAQ",
+  "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*d3N9RYpcKncAAAAAAAAAAAAAARQnAQ",
+  "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*d3N9RYpcKncAAAAAAAAAAAAAARQnAQ",
+  "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*d3N9RYpcKncAAAAAAAAAAAAAARQnAQ",
+  "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*d3N9RYpcKncAAAAAAAAAAAAAARQnAQ",
+  "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*d3N9RYpcKncAAAAAAAAAAAAAARQnAQ",
+  "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*d3N9RYpcKncAAAAAAAAAAAAAARQnAQ",
+  "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*d3N9RYpcKncAAAAAAAAAAAAAARQnAQ"
 ];
 
 for (let i = 0, l = icons.length; i < l; ++i) {
