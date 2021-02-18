@@ -1,4 +1,4 @@
-**在线示例**： [Oasis Playground](https://oasis-engine.github.io/0.1/playground/index.html)
+**在线示例**： [Oasis Playground](https://oasis-engine.github.io/0.2/playground/index.html)
 
 ### 1. 安装
 
@@ -8,11 +8,13 @@
 npm install
 ```
 
-#### 1.2 link
+#### 1.2 link （如果需要本地 link 调试）
 
 ```
 npm run link
 ```
+
+> 注意： 默认 Oasis 引擎仓库在 ../engine，若不是，请自行修改 script#link
 
 ### 2. 本地开发
 
@@ -26,7 +28,7 @@ npm run dev
 
 #### 2.2 vite 开发
 
-> 保留了原来的 vite 开发流程，方便 link Oasis 仓库进行源码调试
+> 方便 link Oasis 仓库进行源码调试
 
 ```
 npm run dev:vite
@@ -44,13 +46,12 @@ npm run link
 npm run watch
 ```
 
-> 注意： 默认 Oasis 引擎仓库在 ../engine，若不是，请自行修改 script#link
-
 #### 2.3 新建 demo
 
 ```
 npm run add-demo
 ```
+
 按照提示输入完英文名字和中文名字后，即可在`/demos/*****/index.ts` 进行开发
 
 ### 3. 发布
