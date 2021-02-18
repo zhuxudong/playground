@@ -5,11 +5,9 @@ import {
   ParticleRenderer,
   SystemInfo,
   Texture2D,
-  TextureFilterMode,
-  TextureWrapMode,
+  ParticleRendererBlendMode,
   Vector3,
-  WebGLEngine,
-  WrapMode
+  WebGLEngine
 } from "oasis-engine";
 
 //-- create engine object
@@ -26,7 +24,7 @@ cameraEntity.transform.position = new Vector3(0, 0, 50);
 cameraEntity.addComponent(Camera);
 const controls = cameraEntity.addComponent(OrbitControl);
 controls.autoRotate = true;
-controls.autoRotateSpeed = 5;
+controls.autoRotateSpeed = 10;
 
 engine.run();
 
@@ -140,5 +138,6 @@ engine.resourceManager
     particles.isFadeOut = true;
     particles.texture = resource;
     particles.spriteSheet = spriteSheet;
+    particles.blendMode = ParticleRendererBlendMode.Additive;
     particles.start();
   });
