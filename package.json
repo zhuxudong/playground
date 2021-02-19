@@ -6,8 +6,8 @@
   "main": "index.js",
   "scripts": {
     "link": "sudo npm link ../engine/packages/* --no-package-lock",
-    "dev:vite": "vite",
-    "dev": "demosify --serve",
+    "dev": "vite",
+    "dev:demosify": "demosify --serve",
     "build": "demosify --prod",
     "b:mini": "node scripts/to-mini-program.js",
     "add-demo": "node scripts/add-demo.js"
