@@ -64,12 +64,8 @@ engine.resourceManager.load(ResourceList).then((res) => {
   for (let x = 0; x < 5; x++) {
     for (let y = 0; y < 5; y++) {
       let testNode = rootNode.createChild("test_mesh" + x + y);
+      testNode.addChild(gltf.defaultSceneRoot.clone());
       testNode.transform.position = new Vector3((x - 2) * 5, (y - 2) * 5, 0);
-      testNode.transform.rotation = new Vector3(90, 0, 0);
-
-      const meshRender = testNode.addComponent(MeshRenderer);
-      meshRender.mesh = mesh;
-      meshRender.setSharedMaterial(0, gltf.materials[0]);
     }
   }
 
@@ -86,12 +82,7 @@ engine.resourceManager.load(ResourceList).then((res) => {
 
     if (obj) {
       const { primitive, component } = obj;
-      const idx = component.mesh.primitives.indexOf(primitive);
-      let material = component.getInstanceMaterial(idx);
-      if (!material) {
-        material = component.getSharedMaterial(idx).clone();
-        component.setMaterial(idx, material);
-      }
+      let material = component.getInstanceMaterial();
 
       lastMaterial = material;
       laseBaseColor = material.baseColor;

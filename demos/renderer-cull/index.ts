@@ -6,6 +6,7 @@ import {
   Color,
   CuboidGeometry,
   GeometryRenderer,
+  MeshRenderer,
   Script,
   SphereGeometry,
   SystemInfo,
@@ -43,14 +44,14 @@ material2.emissiveColor = new Color(0, 0, 1, 1);
 const geometry = new CuboidGeometry(engine, 5, 5, 5);
 const sphereGeometry = new SphereGeometry(engine, 5);
 
-const cubeRenderer = cube.addComponent(GeometryRenderer);
-const cubeRenderer2 = cube2.addComponent(GeometryRenderer);
+const cubeRenderer = cube.addComponent(MeshRenderer);
+const cubeRenderer2 = cube2.addComponent(MeshRenderer);
 
-cubeRenderer.geometry = geometry;
-cubeRenderer.material = material;
+cubeRenderer.mesh = geometry;
+cubeRenderer.setMaterial(material);
 
-cubeRenderer2.geometry = sphereGeometry;
-cubeRenderer2.material = material2;
+cubeRenderer2.mesh = sphereGeometry;
+cubeRenderer2.setMaterial(material2);
 
 // rotate
 class RotationScript extends Script {

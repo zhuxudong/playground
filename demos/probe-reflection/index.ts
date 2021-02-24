@@ -9,8 +9,8 @@ import {
   CubeProbe,
   DirectLight,
   EnvironmentMapLight,
-  GeometryRenderer,
   Layer,
+  MeshRenderer,
   Script,
   SkyBox,
   SphereGeometry,
@@ -92,10 +92,10 @@ async function loadModel() {
 
 function createSphere(material) {
   const sphereEntity = rootEntity.createChild("sphere");
-  const sphereRender = sphereEntity.addComponent(GeometryRenderer);
+  const sphereRender = sphereEntity.addComponent(MeshRenderer);
   const geometry = new SphereGeometry(engine, 1, 64, 64);
-  sphereRender.geometry = geometry;
-  sphereRender.material = material;
+  sphereRender.mesh = geometry;
+  sphereRender.setMaterial(material);
   return sphereEntity;
 }
 

@@ -7,6 +7,7 @@ import {
   Engine,
   GeometryRenderer,
   Material,
+  MeshRenderer,
   Script,
   Shader,
   SphereGeometry,
@@ -198,9 +199,9 @@ const material = new ShaderMaterial(engine);
 
 // 创建球体形的海面
 const sphereEntity = rootEntity.createChild("sphere");
-const renderer = sphereEntity.addComponent(GeometryRenderer);
-renderer.geometry = new SphereGeometry(engine, 3, 50, 50);
-renderer.material = material;
+const renderer = sphereEntity.addComponent(MeshRenderer);
+renderer.mesh = new SphereGeometry(engine, 3, 50, 50);
+renderer.setMaterial(material);
 
 // 加载噪声纹理
 engine.resourceManager
