@@ -3,10 +3,9 @@ import {
   BlinnPhongMaterial,
   Camera,
   Color,
-  CuboidGeometry,
   MeshRenderer,
+  PrimitiveMesh,
   Script,
-  SphereGeometry,
   SpotLight,
   SystemInfo,
   Vector3,
@@ -53,7 +52,7 @@ function createCuboidGeometry(name, position, rotation, w, h, d, castShadow: boo
   obj.position = new Vector3(...position);
   obj.transform.rotation = new Vector3(rotation[0], rotation[0], rotation[0]);
   let cubeRenderer = obj.addComponent(MeshRenderer);
-  cubeRenderer.mesh = new CuboidGeometry(rootEntity.engine, w, h, d);
+  cubeRenderer.mesh = PrimitiveMesh.createCuboid(rootEntity.engine, w, h, d);
   cubeRenderer.setMaterial(mtl);
   cubeRenderer["recieveShadow"] = !castShadow;
   cubeRenderer["castShadow"] = castShadow;
@@ -75,7 +74,7 @@ spotLight["shadow"].bias = 0.0001;
 spotLight["shadow"].intensity = 0.2;
 
 let sphereRenderer3 = light1.addComponent(MeshRenderer);
-sphereRenderer3.mesh = new SphereGeometry(engine, 0.1);
+sphereRenderer3.mesh = PrimitiveMesh.createSphere(engine, 0.1);
 sphereRenderer3.setMaterial(mtl);
 
 //-- create geometry

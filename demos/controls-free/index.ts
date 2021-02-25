@@ -5,12 +5,11 @@ import { FreeControl } from "@oasis-engine/controls";
 import {
   Camera,
   BlinnPhongMaterial,
-  CuboidGeometry,
   MeshRenderer,
-  PlaneGeometry,
   MeshTopology,
   WebGLEngine,
-  Color
+  Color,
+  PrimitiveMesh
 } from "oasis-engine";
 
 const engine = new WebGLEngine("o3-demo");
@@ -29,11 +28,11 @@ const controler = cameraNode.addComponent(FreeControl);
 controler.movementSpeed = 100;
 controler.rotateSpeed = 1;
 
-const geometry = new CuboidGeometry(engine, 50, 50, 50);
+const cuboid = PrimitiveMesh.createCuboid(engine, 50, 50, 50);
 const material = new BlinnPhongMaterial(engine);
 material.emissiveColor = new Color(0.5, 0.6, 0.6, 1);
 
-const groundGeometry = new PlaneGeometry(engine, 2000, 2000, 100, 100);
+const groundGeometry = PrimitiveMesh.createPlane(engine, 2000, 2000, 100, 100);
 groundGeometry.subMesh.topology = MeshTopology.LineStrip;
 const groundMaterial = new BlinnPhongMaterial(engine);
 groundMaterial.emissiveColor = new Color(1, 1, 1, 1);
@@ -43,7 +42,7 @@ for (let i = 0; i < 100; i++) {
   let cube = rootNode.createChild("cube");
   cube.transform.setPosition(Math.random() * 2000 - 1000, Math.random() * 200, Math.random() * 2000 - 1000);
   const cubeRenderer = cube.addComponent(MeshRenderer);
-  cubeRenderer.mesh = geometry;
+  cubeRenderer.mesh = cuboid;
   cubeRenderer.setMaterial(material);
 }
 
