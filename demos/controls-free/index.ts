@@ -8,7 +8,7 @@ import {
   CuboidGeometry,
   MeshRenderer,
   PlaneGeometry,
-  PrimitiveTopology,
+  MeshTopology,
   WebGLEngine,
   Color
 } from "oasis-engine";
@@ -34,7 +34,7 @@ const material = new BlinnPhongMaterial(engine);
 material.emissiveColor = new Color(0.5, 0.6, 0.6, 1);
 
 const groundGeometry = new PlaneGeometry(engine, 2000, 2000, 100, 100);
-groundGeometry.subMesh.topology = PrimitiveTopology.LineStrip;
+groundGeometry.subMesh.topology = MeshTopology.LineStrip;
 const groundMaterial = new BlinnPhongMaterial(engine);
 groundMaterial.emissiveColor = new Color(1, 1, 1, 1);
 
