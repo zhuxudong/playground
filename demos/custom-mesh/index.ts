@@ -24,6 +24,7 @@ import {
 class CustomCubeGeometry {
   /**
    * Create cube geometry with custom BufferGeometry.
+   * @param engine - Engine
    * @param size - Cube size
    * @returns Cube mesh
    */
@@ -103,7 +104,7 @@ cameraEntity.transform.lookAt(new Vector3(0, 0, 0));
 cameraEntity.addComponent(Camera);
 
 // Create custom cube.
-// Use CustomCubeGeometry.create() to create cube geometry.
+// Use CustomCubeGeometry.create() to create custom cube geometry.
 const cubeEntity = rootEntity.createChild("Cube");
 const cubeRenderer = cubeEntity.addComponent(MeshRenderer);
 const cubeGeometry = CustomCubeGeometry.create(engine, 1.0);
