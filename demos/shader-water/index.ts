@@ -5,12 +5,11 @@ import {
   Camera,
   Color,
   Engine,
-  GeometryRenderer,
   Material,
   MeshRenderer,
+  PrimitiveMesh,
   Script,
   Shader,
-  SphereGeometry,
   SystemInfo,
   Texture2D,
   Vector3,
@@ -200,7 +199,7 @@ const material = new ShaderMaterial(engine);
 // 创建球体形的海面
 const sphereEntity = rootEntity.createChild("sphere");
 const renderer = sphereEntity.addComponent(MeshRenderer);
-renderer.mesh = new SphereGeometry(engine, 3, 50, 50);
+renderer.mesh = PrimitiveMesh.createSphere(engine, 3, 50);
 renderer.setMaterial(material);
 
 // 加载噪声纹理

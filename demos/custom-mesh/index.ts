@@ -3,14 +3,14 @@ import {
   BlinnPhongMaterial,
   Buffer,
   BufferBindFlag,
-  BufferGeometry,
   BufferUsage,
   Camera,
   Color,
   DirectLight,
   Engine,
-  GeometryRenderer,
   IndexFormat,
+  Mesh,
+  MeshRenderer,
   SystemInfo,
   Vector3,
   Vector4,
@@ -20,15 +20,15 @@ import {
 } from "oasis-engine";
 
 /**
- * to create custom cube geometry.
+ * To create custom cube geometry.
  */
-class CustomCubeGeometry {
+class CustomCubeMesh {
   /**
    * create cube geometry with custom BufferGeometry.
    * @param size - cube size
    */
-  static create(engine: Engine, size: number): BufferGeometry {
-    const geometry = new BufferGeometry(engine, "CustomCubeGeometry");
+  static create(engine: Engine, size: number): Mesh {
+    const mesh = new Mesh(engine, "CustomCubeMesh");
 
     // prettier-ignore
     // create vertices data.
@@ -67,18 +67,18 @@ class CustomCubeGeometry {
     const indexBuffer = new Buffer(engine, BufferBindFlag.IndexBuffer, indices, BufferUsage.Static);
 
     // bind buffer
-    geometry.setVertexBufferBinding(vertexBuffer, 24);
-    geometry.setIndexBufferBinding(indexBuffer, IndexFormat.UInt16);
+    mesh.setVertexBufferBinding(vertexBuffer, 24);
+    mesh.setIndexBufferBinding(indexBuffer, IndexFormat.UInt16);
 
     // add vertexElement
-    geometry.setVertexElements([
+    mesh.setVertexElements([
       new VertexElement("POSITION", 0, VertexElementFormat.Vector3, 0),
       new VertexElement("NORMAL", 12, VertexElementFormat.Vector3, 0)
     ]);
 
     // add one sub geometry.
-    geometry.addSubGeometry(0, indices.length);
-    return geometry;
+    mesh.addSubMesh(0, indices.length);
+    return mesh;
   }
 }
 
@@ -105,13 +105,12 @@ cameraEntity.addComponent(Camera);
 // create custom cube.
 // use CustomCubeGeometry.create() to create cube geometry.
 const cubeEntity = rootEntity.createChild("Cube");
-const cubeRenderer = cubeEntity.addComponent(GeometryRenderer);
-const cubeGeometry = CustomCubeGeometry.create(engine, 1.0);
+const cubeRenderer = cubeEntity.addComponent(MeshRenderer);
+const cubeGeometry = CustomCubeMesh.create(engine, 1.0);
 const material = new BlinnPhongMaterial(engine);
-cubeEntity.transform.rotateXYZ(0, 60, 0);
-material.ambientColor = new Color(1, 1, 1, 1);
-cubeRenderer.geometry = cubeGeometry;
-cubeRenderer.material = material;
+cubeEntity.transform.rotate(0, 60, 0);
+cubeRenderer.mesh = cubeGeometry;
+cubeRenderer.setMaterial(material);
 
 // run engine.
 engine.run();

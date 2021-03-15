@@ -11,9 +11,9 @@ import {
   EnvironmentMapLight,
   Layer,
   MeshRenderer,
+  PrimitiveMesh,
   Script,
   SkyBox,
-  SphereGeometry,
   SystemInfo,
   TextureCubeMap,
   Vector3,
@@ -93,7 +93,7 @@ async function loadModel() {
 function createSphere(material) {
   const sphereEntity = rootEntity.createChild("sphere");
   const sphereRender = sphereEntity.addComponent(MeshRenderer);
-  const geometry = new SphereGeometry(engine, 1, 64, 64);
+  const geometry = PrimitiveMesh.createSphere(engine, 1, 64);
   sphereRender.mesh = geometry;
   sphereRender.setMaterial(material);
   return sphereEntity;

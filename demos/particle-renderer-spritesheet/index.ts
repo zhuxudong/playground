@@ -2,10 +2,11 @@ import { OrbitControl } from "@oasis-engine/controls";
 import {
   AssetType,
   Camera,
+  Color,
   ParticleRenderer,
+  ParticleRendererBlendMode,
   SystemInfo,
   Texture2D,
-  ParticleRendererBlendMode,
   Vector3,
   WebGLEngine
 } from "oasis-engine";
@@ -132,7 +133,7 @@ engine.resourceManager
     particles.rotateVelocityRandomness = 1;
     particles.size = 1;
     particles.sizeRandomness = 1;
-    particles.color = new Vector3(0.5, 0.5, 0.5);
+    particles.color = new Color(0.5, 0.5, 0.5);
     particles.colorRandomness = 1;
     particles.isFadeIn = true;
     particles.isFadeOut = true;
