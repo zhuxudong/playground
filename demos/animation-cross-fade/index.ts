@@ -12,7 +12,7 @@ engine.canvas.height = window.innerHeight * SystemInfo.devicePixelRatio;
 const scene = engine.sceneManager.activeScene;
 const rootEntity = scene.createRootEntity();
 const lightEntity = rootEntity.createChild("light");
-lightEntity.transform.rotateXYZ(0, 180, 0);
+lightEntity.transform.rotate(0, 180, 0);
 lightEntity.addComponent(DirectLight);
 
 //-- create camera

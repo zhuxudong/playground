@@ -4,11 +4,9 @@ import {
   BlinnPhongMaterial,
   Camera,
   Color,
-  CuboidGeometry,
-  GeometryRenderer,
   MeshRenderer,
+  PrimitiveMesh,
   Script,
-  SphereGeometry,
   SystemInfo,
   Vector3,
   WebGLEngine
@@ -41,8 +39,8 @@ const material = new BlinnPhongMaterial(engine);
 material.emissiveColor = new Color(1, 0, 0, 1);
 const material2 = new BlinnPhongMaterial(engine);
 material2.emissiveColor = new Color(0, 0, 1, 1);
-const geometry = new CuboidGeometry(engine, 5, 5, 5);
-const sphereGeometry = new SphereGeometry(engine, 5);
+const geometry = PrimitiveMesh.createCuboid(engine, 5, 5, 5);
+const sphereGeometry = PrimitiveMesh.createSphere(engine, 5);
 
 const cubeRenderer = cube.addComponent(MeshRenderer);
 const cubeRenderer2 = cube2.addComponent(MeshRenderer);
@@ -56,7 +54,7 @@ cubeRenderer2.setMaterial(material2);
 // rotate
 class RotationScript extends Script {
   onUpdate() {
-    this.entity.transform.rotateXYZ(1, 1, 1);
+    this.entity.transform.rotate(1, 1, 1);
   }
 }
 cube.addComponent(RotationScript);

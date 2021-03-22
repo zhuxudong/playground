@@ -93,7 +93,11 @@ async function loadModel() {
 function createSphere(material) {
   const sphereEntity = rootEntity.createChild("sphere");
   const sphereRender = sphereEntity.addComponent(MeshRenderer);
+<<<<<<< HEAD
   const geometry = PrimitiveMesh.createSphere(engine, 1, 64, 64);
+=======
+  const geometry = PrimitiveMesh.createSphere(engine, 1, 64);
+>>>>>>> 14589a89d4fcde728d4c5193b56d9237415f9537
   sphereRender.mesh = geometry;
   sphereRender.setMaterial(material);
   return sphereEntity;
