@@ -1,6 +1,17 @@
 import { OrbitControl } from "@oasis-engine/controls";
 import * as dat from "dat.gui";
-import { Animation, Camera, Color, DirectLight, SystemInfo, Vector3, WebGLEngine } from "oasis-engine";
+import {
+  Animation,
+  Camera,
+  Color,
+  DirectLight,
+  SystemInfo,
+  Vector3,
+  WebGLEngine,
+  GLTFResource,
+  PBRMaterial
+} from "oasis-engine";
+import { PBRBaseMaterial } from "../../../engine/packages/loader/node_modules/@oasis-engine/core/types/material/PBRBaseMaterial";
 
 const gui = new dat.GUI();
 
@@ -24,15 +35,15 @@ cameraEntity.addComponent(OrbitControl);
 engine.run();
 
 engine.resourceManager
-  .load(
+  .load<GLTFResource>(
     "https://gw.alipayobjects.com/os/OasisHub/e190227d-d527-4a8d-9981-b4bf2da3dc2c/110000216/0.9421391626744058.gltf"
   )
-  .then((asset: any) => {
+  .then((asset) => {
     const { animations, defaultSceneRoot, materials } = asset;
     const animationNameList = animations.map(({ name }) => name);
 
     materials.forEach((material) => {
-      material.baseColor = new Color(1, 1, 1, 1);
+      (<PBRMaterial>material).baseColor = new Color(1, 1, 1, 1);
     });
 
     rootEntity.addChild(defaultSceneRoot);
