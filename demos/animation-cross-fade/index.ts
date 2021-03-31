@@ -5,13 +5,12 @@ import {
   Camera,
   Color,
   DirectLight,
+  GLTFResource,
+  PBRMaterial,
   SystemInfo,
   Vector3,
-  WebGLEngine,
-  GLTFResource,
-  PBRMaterial
+  WebGLEngine
 } from "oasis-engine";
-import { PBRBaseMaterial } from "../../../engine/packages/loader/node_modules/@oasis-engine/core/types/material/PBRBaseMaterial";
 
 const gui = new dat.GUI();
 
