@@ -17,7 +17,7 @@ import {
 /**
  * use PBR material
  */
-function usePBR(rows = 8, cols = 8, radius = 1, gap = 1) {
+function usePBR(rows = 5, cols = 5, radius = 1, gap = 1) {
   const deltaGap = radius * 2 + gap;
   const minX = (-deltaGap * (cols - 1)) / 2;
   const maxY = (deltaGap * (rows - 1)) / 2;
@@ -40,17 +40,25 @@ function usePBR(rows = 8, cols = 8, radius = 1, gap = 1) {
     entity.transform.setPosition(minX + currentCol * deltaGap, maxY - currentRow * deltaGap, 0);
 
     // pbr metallic
-    material.metallicFactor = deltaMetal * currentCol;
+    material.metallicFactor = 1 - deltaMetal * currentRow;
+
     // pbr roughness
-    material.roughnessFactor = deltaRoughness * currentRow;
+    material.roughnessFactor = deltaRoughness * currentCol;
+
+    // base color
+    if (currentRow === 0) {
+      material.baseColor.setValue(186 / 255, 110 / 255, 64 / 255, 1.0);
+    } else if (currentRow === rows - 1) {
+      material.baseColor.setValue(0, 0, 0, 1);
+    }
   }
 }
 
 const gui = new dat.GUI();
 const guiDebug = {
-  env: "road",
-  introX: "从左到右金属度递增",
-  introY: "从上到下粗糙度递增"
+  env: "forrest",
+  introX: "从左到右粗糙度递增",
+  introY: "从上到下金属度递减"
 };
 gui.add(guiDebug, "introX");
 gui.add(guiDebug, "introY");
@@ -65,11 +73,11 @@ const rootEntity = scene.createRootEntity();
 
 // create camera
 const cameraEntity = rootEntity.createChild("camera_entity");
-cameraEntity.transform.position = new Vector3(0, 0, 30);
+cameraEntity.transform.position = new Vector3(0, 0, 20);
 cameraEntity.addComponent(Camera);
 const control = cameraEntity.addComponent(OrbitControl);
-control.maxDistance = 30;
-control.minDistance = 30;
+control.maxDistance = 20;
+control.minDistance = 2;
 
 // create skybox
 const skybox = rootEntity.addComponent(SkyBox);
@@ -80,6 +88,17 @@ const envLight = rootEntity.addComponent(EnvironmentMapLight);
 // load env texture
 engine.resourceManager
   .load([
+    {
+      urls: [
+        "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*Bk5FQKGOir4AAAAAAAAAAAAAARQnAQ",
+        "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*_cPhR7JMDjkAAAAAAAAAAAAAARQnAQ",
+        "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*trqjQp1nOMQAAAAAAAAAAAAAARQnAQ",
+        "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*_RXwRqwMK3EAAAAAAAAAAAAAARQnAQ",
+        "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*q4Q6TroyuXcAAAAAAAAAAAAAARQnAQ",
+        "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*DP5QTbTSAYgAAAAAAAAAAAAAARQnAQ"
+      ],
+      type: AssetType.TextureCube
+    },
     {
       urls: [
         "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*5w6_Rr6ML6IAAAAAAAAAAAAAARQnAQ",
@@ -104,17 +123,18 @@ engine.resourceManager
     }
   ])
   .then((cubeMaps: TextureCubeMap[]) => {
+    envLight.diffuseTexture = cubeMaps[0];
     envLight.specularTexture = cubeMaps[1];
     skybox.skyBoxMap = cubeMaps[1];
     gui.add(guiDebug, "env", ["forrest", "road"]).onChange((v) => {
       switch (v) {
         case "forrest":
-          envLight.specularTexture = cubeMaps[0];
-          skybox.skyBoxMap = cubeMaps[0];
-          break;
-        case "road":
           envLight.specularTexture = cubeMaps[1];
           skybox.skyBoxMap = cubeMaps[1];
+          break;
+        case "road":
+          envLight.specularTexture = cubeMaps[2];
+          skybox.skyBoxMap = cubeMaps[2];
           break;
       }
     });
