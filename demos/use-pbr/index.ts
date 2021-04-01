@@ -23,12 +23,6 @@ function usePBR(rows = 8, cols = 8, radius = 1, gap = 1) {
   const maxY = (deltaGap * (rows - 1)) / 2;
   const deltaMetal = 1 / (cols - 1);
   const deltaRoughness = 1 / (rows - 1);
-  const materials: PBRMaterial[] = new Array(rows * cols);
-
-  // create materials
-  for (let i = 0, count = rows * cols; i < count; i++) {
-    materials[i] = new PBRMaterial(engine);
-  }
 
   // create model mesh
   const mesh = PrimitiveMesh.createSphere(engine, radius, 64);
@@ -37,12 +31,12 @@ function usePBR(rows = 8, cols = 8, radius = 1, gap = 1) {
   for (let i = 0, count = rows * cols; i < count; i++) {
     const entity = rootEntity.createChild();
     const renderer = entity.addComponent(MeshRenderer);
+    const material = new PBRMaterial(engine);
     const currentRow = Math.floor(i / cols);
     const currentCol = i % cols;
-    const material = materials[i];
+
     renderer.mesh = mesh;
     renderer.setMaterial(material);
-
     entity.transform.setPosition(minX + currentCol * deltaGap, maxY - currentRow * deltaGap, 0);
 
     // pbr metallic
