@@ -18,5 +18,6 @@
   { "label": "精灵渲染器", "src": "sprite-renderer" },
   { "label": "变换", "src": "transform-x" },
   { "label": "PBR-基本", "src": "pbr-base" },
-  { "label": "纹理缩放偏移", "src": "material-tilingoffset" }
+  { "label": "纹理缩放偏移", "src": "material-tilingoffset" },
+  { "label": "精灵翻转", "src": "sprite-flip" }
 ]
