@@ -25,7 +25,7 @@ function init(): void {
   // Load texture
   engine.resourceManager
     .load<Texture2D>({
-      url: "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*g8r4S51En90AAAAAAAAAAAAAARQnAQ",
+      url: "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*Umw_RJGiZLYAAAAAAAAAAAAAARQnAQ",
       type: AssetType.Texture2D
     })
     .then((texture) => {
