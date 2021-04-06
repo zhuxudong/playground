@@ -20,6 +20,7 @@
   "license": "ISC",
   "dependencies": {
     "@oasis-engine/controls": "^0.3.0",
+    "@oasis-engine/engine-spine": "^0.1.2",
     "@oasis-engine/framebuffer-picker": "^0.3.0",
     "dat.gui": "^0.7.7",
     "oasis-engine": "^0.3.0"
