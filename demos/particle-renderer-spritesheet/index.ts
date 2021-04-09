@@ -118,7 +118,7 @@ const spriteSheet = [
 
 engine.resourceManager
   .load<Texture2D>({
-    url: "https://gw-office.alipayobjects.com/basement_prod/f474fffc-f76c-4a95-80b4-ba42170f3fe9.png",
+    url: "https://gw.alipayobjects.com/mdn/rms_d27172/afts/img/A*_oorR5SrpXcAAAAAAAAAAAAAARQnAQ",
     type: AssetType.Texture2D
   })
   .then((resource) => {
