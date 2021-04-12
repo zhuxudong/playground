@@ -41,7 +41,7 @@ engine.resourceManager
         spriteRenderer.sprite = sprite;
         // spriteRenderer.flipX = true;
         // spriteRenderer.flipY = true;
-        const rect = spriteRenderer.sprite.rect;
+        const rect = spriteRenderer.sprite.region;
         const scaleX = 100.0 / rect.width;
         const scaleY = 100.0 / rect.height;
         spriteEntity.transform.setScale(scaleX, scaleY, 1);
