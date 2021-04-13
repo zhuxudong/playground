@@ -6,7 +6,7 @@ const path = require("path");
 const chalk = require("chalk");
 const inquirer = require("inquirer");
 const prettier = require("prettier");
-const regExp = /^([a-z-])+$/g;
+const regExp = /^([a-z0-9-])+$/g;
 
 const file = path.join(__dirname, "../demos/.demoList.json");
 const demoList = fs.readJsonSync(file);
