@@ -64,5 +64,6 @@
       { "src": "framebuffer-picker", "label": "帧拾取" },
       { "src": "probe-reflection", "label": "环境反射探针" }
     ]
-  }
+  },
+  { "group": "GLTF 能力", "src": "gltf", "demos": [{ "src": "animation", "label": "基本动画" }] }
 ]
