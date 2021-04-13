@@ -58,7 +58,8 @@ function inquirerDemo() {
             name: "No wanted? Add new group",
             value: "",
             short: " "
-          }
+          },
+          new inquirer.Separator()
         ]
       },
       {
