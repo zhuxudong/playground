@@ -65,5 +65,12 @@
       { "src": "probe-reflection", "label": "环境反射探针" }
     ]
   },
-  { "group": "GLTF 能力", "src": "gltf", "demos": [{ "src": "animation", "label": "基本动画" }] }
+  {
+    "group": "GLTF",
+    "src": "gltf",
+    "demos": [
+      { "src": "animation", "label": "基本动画" },
+      { "src": "alpha-blend-mode", "label": "透明混合模式" }
+    ]
+  }
 ]
