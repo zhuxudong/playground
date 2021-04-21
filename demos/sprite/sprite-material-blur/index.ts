@@ -1,4 +1,3 @@
-import { OrbitControl } from "@oasis-engine/controls";
 import {
   AssetType,
   BlendFactor,
@@ -31,7 +30,6 @@ const rootEntity = scene.createRootEntity();
 const cameraEntity = rootEntity.createChild("Camera");
 cameraEntity.transform.position = new Vector3(0, 0, 20);
 cameraEntity.addComponent(Camera).isOrthographic = true;
-cameraEntity.addComponent(OrbitControl);
 
 engine.resourceManager
   .load<Texture2D>({
