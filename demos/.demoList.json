@@ -17,6 +17,7 @@
       { "src": "sprite-flip", "label": "精灵翻转" },
       { "src": "sprite-color", "label": "精灵颜色" },
       { "src": "sprite-region", "label": "精灵设置区域显示" },
+      { "src": "sprite-pivot", "label": "精灵枢纽点" },
       { "src": "sprite-sheetAnimation", "label": "精灵帧动画" },
       { "src": "sprite-material-blur", "label": "精灵自定义材质-高斯模糊" },
       { "src": "sprite-material-dissolve", "label": "精灵自定义材质-溶解" }
