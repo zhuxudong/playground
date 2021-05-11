@@ -2,12 +2,13 @@ import { OrbitControl } from "@oasis-engine/controls";
 import * as dat from "dat.gui";
 import {
   AssetType,
+  BackgroundMode,
   Camera,
-  EnvironmentMapLight,
+  DiffuseMode,
   MeshRenderer,
   PBRMaterial,
   PrimitiveMesh,
-  SkyBox,
+  SkyBoxMaterial,
   TextureCubeMap,
   Vector3,
   WebGLEngine
@@ -62,14 +63,15 @@ const guiDebug = {
 gui.add(guiDebug, "introX");
 gui.add(guiDebug, "introY");
 
-// create engine object
+// Create engine object
 const engine = new WebGLEngine("o3-demo");
 engine.canvas.resizeByClientSize();
 
 const scene = engine.sceneManager.activeScene;
 const rootEntity = scene.createRootEntity();
+const { ambientLight, background } = scene;
 
-// create camera
+// Create camera
 const cameraEntity = rootEntity.createChild("camera_entity");
 cameraEntity.transform.position = new Vector3(0, 0, 20);
 cameraEntity.addComponent(Camera);
@@ -77,13 +79,14 @@ const control = cameraEntity.addComponent(OrbitControl);
 control.maxDistance = 20;
 control.minDistance = 2;
 
-// create skybox
-const skybox = rootEntity.addComponent(SkyBox);
+// Create sky
+const sky = background.sky;
+const skyMaterial = new SkyBoxMaterial(engine);
+background.mode = BackgroundMode.Sky;
+sky.material = skyMaterial;
+sky.mesh = PrimitiveMesh.createCuboid(engine, 1, 1, 1);
 
-// create env light
-const envLight = rootEntity.addComponent(EnvironmentMapLight);
-
-// load env texture
+// Load env texture
 engine.resourceManager
   .load([
     {
@@ -121,18 +124,20 @@ engine.resourceManager
     }
   ])
   .then((cubeMaps: TextureCubeMap[]) => {
-    envLight.diffuseTexture = cubeMaps[0];
-    envLight.specularTexture = cubeMaps[1];
-    skybox.skyBoxMap = cubeMaps[1];
+    ambientLight.diffuseMode = DiffuseMode.Texture;
+    ambientLight.diffuseTexture = cubeMaps[0];
+    ambientLight.specularTexture = cubeMaps[1];
+
+    skyMaterial.textureCubeMap = cubeMaps[1];
     gui.add(guiDebug, "env", ["forrest", "road"]).onChange((v) => {
       switch (v) {
         case "forrest":
-          envLight.specularTexture = cubeMaps[1];
-          skybox.skyBoxMap = cubeMaps[1];
+          ambientLight.specularTexture = cubeMaps[1];
+          skyMaterial.textureCubeMap = cubeMaps[1];
           break;
         case "road":
-          envLight.specularTexture = cubeMaps[2];
-          skybox.skyBoxMap = cubeMaps[2];
+          ambientLight.specularTexture = cubeMaps[2];
+          skyMaterial.textureCubeMap = cubeMaps[2];
           break;
       }
     });

@@ -2,13 +2,13 @@ import { OrbitControl } from "@oasis-engine/controls";
 import * as dat from "dat.gui";
 import {
   AssetType,
-  BlinnPhongMaterial,
   Camera,
   MeshRenderer,
   PrimitiveMesh,
   RenderFace,
   Script,
   Texture2D,
+  UnlitMaterial,
   Vector3,
   WebGLEngine
 } from "oasis-engine";
@@ -40,12 +40,11 @@ function init(): void {
       const entity = rootEntity.createChild();
       const renderer = entity.addComponent(MeshRenderer);
       const mesh = PrimitiveMesh.createPlane(engine, 10, 10);
-      const material = new BlinnPhongMaterial(engine);
+      const material = new UnlitMaterial(engine);
 
       texture.anisoLevel = 16;
       material.renderFace = RenderFace.Double;
-      material.emissiveTexture = texture;
-      material.emissiveColor.setValue(1, 1, 1, 1);
+      material.baseTexture = texture;
 
       renderer.mesh = mesh;
       renderer.setMaterial(material);
@@ -66,7 +65,7 @@ function init(): void {
 /**
  * Add data GUI.
  */
-function addDataGUI(material: BlinnPhongMaterial, animationScript: AnimateScript): any {
+function addDataGUI(material: UnlitMaterial, animationScript: AnimateScript): any {
   const gui = new dat.GUI();
   const guiData = {
     tilingX: 1,
@@ -124,7 +123,6 @@ function addDataGUI(material: BlinnPhongMaterial, animationScript: AnimateScript
  */
 class AnimateScript extends Script {
   guiData: any;
-  material: BlinnPhongMaterial;
 
   /**
    * The main loop, called frame by frame.
