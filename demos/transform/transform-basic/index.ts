@@ -1,15 +1,5 @@
 import { OrbitControl } from "@oasis-engine/controls";
-import {
-  AmbientLight,
-  Camera,
-  Color,
-  DirectLight,
-  Entity,
-  GLTFResource,
-  Script,
-  SystemInfo,
-  WebGLEngine
-} from "oasis-engine";
+import { AmbientLight, Camera, Color, DirectLight, Entity, GLTFResource, Script, WebGLEngine } from "oasis-engine";
 
 init();
 
@@ -19,8 +9,7 @@ init();
 function init(): void {
   // Create engine
   const engine = new WebGLEngine("o3-demo");
-  engine.canvas.width = window.innerWidth * SystemInfo.devicePixelRatio;
-  engine.canvas.height = window.innerHeight * SystemInfo.devicePixelRatio;
+  engine.canvas.resizeByClientSize();
 
   // Create yellow duck
   engine.resourceManager

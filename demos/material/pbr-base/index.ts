@@ -8,7 +8,6 @@ import {
   PBRMaterial,
   PrimitiveMesh,
   SkyBox,
-  SystemInfo,
   TextureCubeMap,
   Vector3,
   WebGLEngine
@@ -65,8 +64,7 @@ gui.add(guiDebug, "introY");
 
 // create engine object
 const engine = new WebGLEngine("o3-demo");
-engine.canvas.width = window.innerWidth * SystemInfo.devicePixelRatio;
-engine.canvas.height = window.innerHeight * SystemInfo.devicePixelRatio;
+engine.canvas.resizeByClientSize();
 
 const scene = engine.sceneManager.activeScene;
 const rootEntity = scene.createRootEntity();

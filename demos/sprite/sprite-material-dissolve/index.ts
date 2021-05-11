@@ -12,7 +12,6 @@ import {
   Shader,
   Sprite,
   SpriteRenderer,
-  SystemInfo,
   Texture2D,
   WebGLEngine
 } from "oasis-engine";
@@ -22,8 +21,7 @@ init();
 function init(): void {
   // Create engine.
   const engine = new WebGLEngine("o3-demo");
-  engine.canvas.width = window.innerWidth * SystemInfo.devicePixelRatio;
-  engine.canvas.height = window.innerHeight * SystemInfo.devicePixelRatio;
+  engine.canvas.resizeByClientSize();
 
   // Create root entity.
   const rootEntity = engine.sceneManager.activeScene.createRootEntity();
