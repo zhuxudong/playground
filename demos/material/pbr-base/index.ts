@@ -2,17 +2,16 @@ import { OrbitControl } from "@oasis-engine/controls";
 import * as dat from "dat.gui";
 import {
   AssetType,
+  BackgroundMode,
   Camera,
+  DiffuseMode,
   MeshRenderer,
   PBRMaterial,
   PrimitiveMesh,
-  SystemInfo,
+  SkyBoxMaterial,
   TextureCubeMap,
   Vector3,
-  WebGLEngine,
-  DiffuseMode,
-  SkyBoxMaterial,
-  BackgroundMode
+  WebGLEngine
 } from "oasis-engine";
 
 /**
@@ -66,8 +65,7 @@ gui.add(guiDebug, "introY");
 
 // Create engine object
 const engine = new WebGLEngine("o3-demo");
-engine.canvas.width = window.innerWidth * SystemInfo.devicePixelRatio;
-engine.canvas.height = window.innerHeight * SystemInfo.devicePixelRatio;
+engine.canvas.resizeByClientSize();
 
 const scene = engine.sceneManager.activeScene;
 const rootEntity = scene.createRootEntity();

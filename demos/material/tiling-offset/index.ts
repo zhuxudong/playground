@@ -7,7 +7,6 @@ import {
   PrimitiveMesh,
   RenderFace,
   Script,
-  SystemInfo,
   Texture2D,
   UnlitMaterial,
   Vector3,
@@ -19,8 +18,7 @@ init();
 function init(): void {
   // Create engine object
   const engine = new WebGLEngine("o3-demo");
-  engine.canvas.width = window.innerWidth * SystemInfo.devicePixelRatio;
-  engine.canvas.height = window.innerHeight * SystemInfo.devicePixelRatio;
+  engine.canvas.resizeByClientSize();
 
   // Load texture
   engine.resourceManager

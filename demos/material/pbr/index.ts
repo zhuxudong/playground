@@ -10,7 +10,6 @@ import {
   GLTFResource,
   PrimitiveMesh,
   SkyBoxMaterial,
-  SystemInfo,
   TextureCubeMap,
   Vector3,
   WebGLEngine
@@ -18,8 +17,7 @@ import {
 
 //-- create engine object
 let engine = new WebGLEngine("o3-demo");
-engine.canvas.width = window.innerWidth * SystemInfo.devicePixelRatio;
-engine.canvas.height = window.innerHeight * SystemInfo.devicePixelRatio;
+engine.canvas.resizeByClientSize();
 
 let scene = engine.sceneManager.activeScene;
 const { ambientLight, background } = scene;

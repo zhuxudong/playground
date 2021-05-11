@@ -11,7 +11,6 @@ import {
   IndexFormat,
   Mesh,
   MeshRenderer,
-  SystemInfo,
   Vector3,
   VertexElement,
   VertexElementFormat,
@@ -20,10 +19,9 @@ import {
 
 // Create engine and get root entity.
 const engine = new WebGLEngine("o3-demo");
-const canvas = engine.canvas;
+engine.canvas.resizeByClientSize();
+
 const rootEntity = engine.sceneManager.activeScene.createRootEntity("Root");
-canvas.width = window.innerWidth * SystemInfo.devicePixelRatio;
-canvas.height = window.innerHeight * SystemInfo.devicePixelRatio;
 
 // Create light.
 const lightEntity = rootEntity.createChild("DirectLight");
