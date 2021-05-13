@@ -6,11 +6,11 @@ import {
   BufferUsage,
   Camera,
   Color,
-  DirectLight,
   Engine,
   IndexFormat,
   Mesh,
   MeshRenderer,
+  PointLight,
   Vector3,
   VertexElement,
   VertexElementFormat,
@@ -24,10 +24,11 @@ engine.canvas.resizeByClientSize();
 const rootEntity = engine.sceneManager.activeScene.createRootEntity("Root");
 
 // Create light.
-const lightEntity = rootEntity.createChild("DirectLight");
-const directLight = lightEntity.addComponent(DirectLight);
-directLight.color = new Color(0.3, 0.4, 0.4);
-
+const lightEntity = rootEntity.createChild("pointLight");
+const pointLight = lightEntity.addComponent(PointLight);
+pointLight.color = new Color(0.3, 0.4, 0.4);
+pointLight.distance = 10;
+lightEntity.transform.setPosition(2, 5, 5);
 // Create camera.
 const cameraEntity = rootEntity.createChild("Camera");
 cameraEntity.transform.setPosition(0, 6, 10);
