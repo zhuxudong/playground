@@ -67,7 +67,6 @@ light1.addComponent(LookAtFocus);
 
 let spotLight = light1.addComponent(SpotLight);
 spotLight.angle = Math.PI / 12;
-spotLight.penumbra = 2;
 spotLight["enableShadow"] = true;
 spotLight["shadow"].bias = 0.0001;
 spotLight["shadow"].intensity = 0.2;
