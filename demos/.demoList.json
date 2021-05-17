@@ -66,15 +66,8 @@
     "src": "advance",
     "demos": [
       { "src": "framebuffer-picker", "label": "帧拾取" },
-      { "src": "probe-reflection", "label": "环境反射探针" }
-    ]
-  },
-  {
-    "group": "GLTF",
-    "src": "gltf",
-    "demos": [
-      { "src": "animation", "label": "基本动画" },
-      { "src": "alpha-blend-mode", "label": "透明混合模式" }
+      { "src": "probe-reflection", "label": "环境反射探针" },
+      { "src": "gltf-loader", "label": "GLTF Loader" }
     ]
   }
 ]
