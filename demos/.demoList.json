@@ -40,7 +40,8 @@
       { "src": "tiling-offset", "label": "纹理的缩放偏移" },
       { "src": "pbr", "label": "PBR 材质" },
       { "src": "pbr-base", "label": "PBR-基本" },
-      { "src": "shader-water", "label": "自定义材质-水" }
+      { "src": "shader-water", "label": "自定义材质-水" },
+      { "src": "blend-mode", "label": "混合模式" }
     ]
   },
   { "group": "纹理", "src": "texture", "demos": [{ "src": "video-texture", "label": "视频纹理" }] },
