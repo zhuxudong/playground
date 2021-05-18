@@ -145,6 +145,7 @@ class Oasis {
       normalTangentTest: "https://gw.alipayobjects.com/os/bmw-prod/4bb1a66c-55e3-4898-97d7-a9cc0f239686.glb",
       normalTangentMirrorTest: "https://gw.alipayobjects.com/os/bmw-prod/8335f555-2061-47f5-9252-366c6ebf882a.glb",
       orientationTest: "https://gw.alipayobjects.com/os/bmw-prod/16cdf390-ac42-411c-9d2b-8e112dfd723b.glb",
+      sparseTest: "https://gw.alipayobjects.com/os/bmw-prod/f00de659-53ea-49d1-8f2c-d0a412542b80.gltf",
       specGlossVsMetalRough: "https://gw.alipayobjects.com/os/bmw-prod/4643bd7b-f988-4144-8245-4a390023d92d.glb",
       sponza: "https://gw.alipayobjects.com/os/bmw-prod/ca50859b-d736-4a3e-9fc3-241b0bd2afef.gltf",
       suzanne: "https://gw.alipayobjects.com/os/bmw-prod/3869e495-2e04-4e80-9d22-13b37116379a.gltf",
