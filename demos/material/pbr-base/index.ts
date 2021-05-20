@@ -1,4 +1,5 @@
 import { OrbitControl } from "@oasis-engine/controls";
+import { SphericalHarmonics3Baker } from "@oasis-engine/baker";
 import * as dat from "dat.gui";
 import {
   AssetType,
@@ -10,6 +11,7 @@ import {
   GLTFResource,
   PrimitiveMesh,
   SkyBoxMaterial,
+  SphericalHarmonics3,
   TextureCubeMap,
   Vector3,
   WebGLEngine
@@ -64,22 +66,6 @@ Promise.all([
   engine.resourceManager
     .load<TextureCubeMap>({
       urls: [
-        "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*Bk5FQKGOir4AAAAAAAAAAAAAARQnAQ",
-        "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*_cPhR7JMDjkAAAAAAAAAAAAAARQnAQ",
-        "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*trqjQp1nOMQAAAAAAAAAAAAAARQnAQ",
-        "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*_RXwRqwMK3EAAAAAAAAAAAAAARQnAQ",
-        "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*q4Q6TroyuXcAAAAAAAAAAAAAARQnAQ",
-        "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*DP5QTbTSAYgAAAAAAAAAAAAAARQnAQ"
-      ],
-      type: AssetType.TextureCube
-    })
-    .then((cubeMap) => {
-      ambientLight.diffuseMode = DiffuseMode.Texture;
-      ambientLight.diffuseTexture = cubeMap;
-    }),
-  engine.resourceManager
-    .load<TextureCubeMap>({
-      urls: [
         "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*5bs-Sb80qcUAAAAAAAAAAAAAARQnAQ",
         "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*rLUCT4VPBeEAAAAAAAAAAAAAARQnAQ",
         "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*LjSHTI5iSPoAAAAAAAAAAAAAARQnAQ",
@@ -92,6 +78,11 @@ Promise.all([
     .then((cubeMap) => {
       ambientLight.specularTexture = cubeMap;
       skyMaterial.textureCubeMap = cubeMap;
+
+      const sh = new SphericalHarmonics3();
+      SphericalHarmonics3Baker.fromTextureCubeMap(cubeMap, sh);
+      ambientLight.diffuseMode = DiffuseMode.SphericalHarmonics;
+      ambientLight.diffuseSphericalHarmonics = sh;
     })
 ]).then(() => {
   engine.run();
