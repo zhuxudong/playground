@@ -1,5 +1,5 @@
+import { EncodingMode, SphericalHarmonics3Baker } from "@oasis-engine/baker";
 import { OrbitControl } from "@oasis-engine/controls";
-import { SphericalHarmonics3Baker } from "@oasis-engine/baker";
 import * as dat from "dat.gui";
 import {
   AssetType,
@@ -9,36 +9,37 @@ import {
   DiffuseMode,
   DirectLight,
   GLTFResource,
+  Logger,
   PrimitiveMesh,
   SkyBoxMaterial,
+  SpecularMode,
   SphericalHarmonics3,
   TextureCubeMap,
   Vector3,
   WebGLEngine
 } from "oasis-engine";
-
+Logger.enable();
 //-- create engine object
-const engine = new WebGLEngine("o3-demo", { alpha: false });
+const engine = new WebGLEngine("o3-demo", { alpha: true });
 engine.canvas.resizeByClientSize();
 
 const scene = engine.sceneManager.activeScene;
 const { ambientLight, background } = scene;
-// ambientLight.diffuseIntensity = 0;
-ambientLight.specularIntensity = 0;
+ambientLight.specularIntensity = 1;
+ambientLight.diffuseIntensity = 1;
 const rootEntity = scene.createRootEntity();
-
 const color2glColor = (color) => new Color(color[0] / 255, color[1] / 255, color[2] / 255);
 const gui = new dat.GUI();
 
 const envFolder = gui.addFolder("EnvironmentMapLight");
-envFolder.add(ambientLight, "specularIntensity", 0, 3, 0.1);
+envFolder.add(ambientLight, "specularIntensity", 0, 1, 0.1);
 envFolder.add(ambientLight, "diffuseIntensity", 0, 1, 0.1);
 const directLightColor = { color: [255, 255, 255] };
 const directLightNode = rootEntity.createChild("dir_light");
 const directLight = directLightNode.addComponent(DirectLight);
 directLightNode.transform.setRotation(0, 30, 0);
 
-// directLight.enabled = false;
+directLight.enabled = false;
 const dirFolder = gui.addFolder("DirectionalLight1");
 dirFolder.add(directLight, "enabled");
 dirFolder.addColor(directLightColor, "color").onChange((v) => (directLight.color = color2glColor(v)));
@@ -54,39 +55,61 @@ control.target.setValue(0.25, 0.25, 0);
 // Create sky
 const sky = background.sky;
 const skyMaterial = new SkyBoxMaterial(engine);
-// background.mode = BackgroundMode.Sky;
+background.mode = BackgroundMode.Sky;
 sky.material = skyMaterial;
 sky.mesh = PrimitiveMesh.createCuboid(engine, 1, 1, 1);
 
 Promise.all([
   engine.resourceManager
     .load<GLTFResource>("https://gw.alipayobjects.com/os/bmw-prod/dda73ec2-6921-42c7-b109-b5cd386f4410.glb")
+    // .load<GLTFResource>("https://gw.alipayobjects.com/os/bmw-prod/150e44f6-7810-4c45-8029-3575d36aff30.gltf")
     .then((gltf) => {
       rootEntity.addChild(gltf.defaultSceneRoot);
       gltf.defaultSceneRoot.transform.setScale(100, 100, 100);
-      console.log(gltf);
     }),
+  // engine.resourceManager
+  //   .load<TextureCubeMap>({
+  //     urls: [
+  //       "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*5bs-Sb80qcUAAAAAAAAAAAAAARQnAQ",
+  //       "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*rLUCT4VPBeEAAAAAAAAAAAAAARQnAQ",
+  //       "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*LjSHTI5iSPoAAAAAAAAAAAAAARQnAQ",
+  //       "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*pgCvTJ85RUYAAAAAAAAAAAAAARQnAQ",
+  //       "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*0BKxR6jgRDAAAAAAAAAAAAAAARQnAQ",
+  //       "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*Pir4RoxLm3EAAAAAAAAAAAAAARQnAQ"
+  //     ],
+  //     type: AssetType.TextureCube
+  //   })
   engine.resourceManager
     .load<TextureCubeMap>({
-      urls: [
-        "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*5bs-Sb80qcUAAAAAAAAAAAAAARQnAQ",
-        "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*rLUCT4VPBeEAAAAAAAAAAAAAARQnAQ",
-        "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*LjSHTI5iSPoAAAAAAAAAAAAAARQnAQ",
-        "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*pgCvTJ85RUYAAAAAAAAAAAAAARQnAQ",
-        "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*0BKxR6jgRDAAAAAAAAAAAAAAARQnAQ",
-        "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*Pir4RoxLm3EAAAAAAAAAAAAAARQnAQ"
-      ],
-      type: AssetType.TextureCube
+      type: AssetType.HDR,
+      // url: "https://gw.alipayobjects.com/os/bmw-prod/10c5d68d-8580-4bd9-8795-6f1035782b94.bin"
+      // url: "https://pissang.github.io/clay-viewer/editor/asset/texture/Ice_Lake.hdr"
+      // url: "https://pissang.github.io/clay-viewer/editor/asset/texture/pisa.hdr",
+      url: "https://gltf-viewer.donmccurdy.com/assets/environment/footprint_court_2k.hdr"
+      // url: "https://playground.babylonjs.com/textures/room.hdr"
     })
     .then((cubeMap) => {
+      console.log("HDR to cubeMap:", cubeMap);
+
+      // const sphereEntity = rootEntity.createChild("sphere");
+      // const sphereRender = sphereEntity.addComponent(MeshRenderer);
+      // const geometry = PrimitiveMesh.createPlane(engine, 10, 10);
+      // sphereRender.mesh = geometry;
+      // const material = new UnlitMaterial(engine);
+      // material.baseTexture = cubeMap;
+      // sphereRender.setMaterial(material);
+
       ambientLight.specularTexture = cubeMap;
+      ambientLight.specularMode = SpecularMode.HDR;
       skyMaterial.textureCubeMap = cubeMap;
 
       const sh = new SphericalHarmonics3();
-      SphericalHarmonics3Baker.fromTextureCubeMap(cubeMap, sh);
-      // ambientLight.diffuseMode = DiffuseMode.SphericalHarmonics;
+      SphericalHarmonics3Baker.fromTextureCubeMap(cubeMap, sh, EncodingMode.RGBE);
+      ambientLight.diffuseMode = DiffuseMode.SphericalHarmonics;
       ambientLight.diffuseSphericalHarmonics = sh;
     })
 ]).then(() => {
   engine.run();
 });
+
+scene.background.solidColor = new Color(0, 0, 0, 0);

@@ -1,4 +1,4 @@
-import { SphericalHarmonics3Baker } from "@oasis-engine/baker";
+import { SphericalHarmonics3Baker, EncodingMode } from "@oasis-engine/baker";
 import { OrbitControl } from "@oasis-engine/controls";
 import * as dat from "dat.gui";
 import {
@@ -7,6 +7,7 @@ import {
   Camera,
   Color,
   DiffuseMode,
+  SpecularMode,
   DirectLight,
   Logger,
   MeshRenderer,
@@ -65,25 +66,18 @@ ballRender.setMaterial(material);
 
 engine.resourceManager
   .load<TextureCubeMap>({
-    urls: [
-      "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*TUkMQpLvsGYAAAAAAAAAAAAAARQnAQ",
-      "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*1PF-Q5j3HKYAAAAAAAAAAAAAARQnAQ",
-      "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*cY8-QLCjqrIAAAAAAAAAAAAAARQnAQ",
-      "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*LTrfR619LjIAAAAAAAAAAAAAARQnAQ",
-      "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*qrYcQYE-SOoAAAAAAAAAAAAAARQnAQ",
-      "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*o_QqQI9ii9wAAAAAAAAAAAAAARQnAQ"
-    ],
-    type: AssetType.TextureCube
+    url: "https://pissang.github.io/clay-viewer/editor/asset/texture/pisa.hdr",
+    type: AssetType.HDR
   })
   .then((cubeMap) => {
     skyMaterial.textureCubeMap = cubeMap;
     scene.ambientLight.specularTexture = cubeMap;
 
     const sh = new SphericalHarmonics3();
-    SphericalHarmonics3Baker.fromTextureCubeMap(cubeMap, sh);
+    SphericalHarmonics3Baker.fromTextureCubeMap(cubeMap, sh, EncodingMode.RGBE);
     scene.ambientLight.diffuseSphericalHarmonics = sh;
     scene.ambientLight.diffuseMode = DiffuseMode.SphericalHarmonics;
-
+    scene.ambientLight.specularMode = SpecularMode.HDR;
     gui
       .add({ bake: true }, "bake")
       .name("烘焙")
