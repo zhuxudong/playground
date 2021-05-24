@@ -66,7 +66,7 @@ Promise.all([
     }),
   engine.resourceManager
     .load<TextureCubeMap>({
-      url: "https://pissang.github.io/clay-viewer/editor/asset/texture/pisa.hdr",
+      url: "https://gw.alipayobjects.com/os/bmw-prod/20d58ffa-c7da-4c54-8980-4efaf91a0239.bin", // pisa_1K
       type: AssetType.HDR
     })
     .then((cubeMap) => {

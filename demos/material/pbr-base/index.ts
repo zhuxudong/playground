@@ -39,7 +39,6 @@ const directLightNode = rootEntity.createChild("dir_light");
 const directLight = directLightNode.addComponent(DirectLight);
 directLightNode.transform.setRotation(0, 30, 0);
 
-directLight.enabled = false;
 const dirFolder = gui.addFolder("DirectionalLight1");
 dirFolder.add(directLight, "enabled");
 dirFolder.addColor(directLightColor, "color").onChange((v) => (directLight.color = color2glColor(v)));
@@ -62,7 +61,6 @@ sky.mesh = PrimitiveMesh.createCuboid(engine, 1, 1, 1);
 Promise.all([
   engine.resourceManager
     .load<GLTFResource>("https://gw.alipayobjects.com/os/bmw-prod/dda73ec2-6921-42c7-b109-b5cd386f4410.glb")
-    // .load<GLTFResource>("https://gw.alipayobjects.com/os/bmw-prod/150e44f6-7810-4c45-8029-3575d36aff30.gltf")
     .then((gltf) => {
       rootEntity.addChild(gltf.defaultSceneRoot);
       gltf.defaultSceneRoot.transform.setScale(100, 100, 100);
@@ -82,11 +80,9 @@ Promise.all([
   engine.resourceManager
     .load<TextureCubeMap>({
       type: AssetType.HDR,
-      // url: "https://gw.alipayobjects.com/os/bmw-prod/10c5d68d-8580-4bd9-8795-6f1035782b94.bin"
-      // url: "https://pissang.github.io/clay-viewer/editor/asset/texture/Ice_Lake.hdr"
-      // url: "https://pissang.github.io/clay-viewer/editor/asset/texture/pisa.hdr",
-      url: "https://gltf-viewer.donmccurdy.com/assets/environment/footprint_court_2k.hdr"
-      // url: "https://playground.babylonjs.com/textures/room.hdr"
+      // url: "https://gw.alipayobjects.com/os/bmw-prod/10c5d68d-8580-4bd9-8795-6f1035782b94.bin"  // sunset_1K
+      // url: "https://gw.alipayobjects.com/os/bmw-prod/20d58ffa-c7da-4c54-8980-4efaf91a0239.bin",// pisa_1K
+      url: "https://gw.alipayobjects.com/os/bmw-prod/59b28d9f-7589-4d47-86b0-52c50b973b10.bin" // footPrint_2K
     })
     .then((cubeMap) => {
       console.log("HDR to cubeMap:", cubeMap);
