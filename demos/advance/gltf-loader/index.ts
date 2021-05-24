@@ -316,11 +316,12 @@ class Oasis {
   }
 
   loadGLTF(url: string) {
-    this.removeGLTF();
+    this.destroyGLTF();
+    const isGLB = /.glb$/.test(url);
     this.engine.resourceManager
       .load<GLTFResource>({
         type: AssetType.Perfab,
-        url
+        url: `${url}#${Math.random()}.${isGLB ? "glb" : "gltf"}` // @todo: resourceManager cache bug
       })
       .then((asset) => {
         const { defaultSceneRoot, materials, animations } = asset;
@@ -342,8 +343,8 @@ class Oasis {
       });
   }
 
-  removeGLTF() {
-    this.rootEntity.removeChild(this.gltfRootEntity);
+  destroyGLTF() {
+    this.gltfRootEntity.destroy();
   }
 
   loadMaterialGUI(materials?: Material[]) {
