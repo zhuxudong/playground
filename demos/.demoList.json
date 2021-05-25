@@ -67,7 +67,8 @@
     "src": "advance",
     "demos": [
       { "src": "framebuffer-picker", "label": "帧拾取" },
-      { "src": "probe-reflection", "label": "环境反射探针" }
+      { "src": "probe-reflection", "label": "环境反射探针" },
+      { "src": "gltf-loader", "label": "GLTF Loader" }
     ]
   }
 ]
