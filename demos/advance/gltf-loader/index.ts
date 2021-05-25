@@ -441,17 +441,16 @@ class Oasis {
         common
           .add(material, "opacity", 0, 1)
           .step(0.01)
-          .onChange((v) => (state.baseColor[3] = v));
+          .onChange((v) => {
+            material.opacity = v;
+          });
         common.add(material, "isTransparent");
         common.add(material, "alphaCutoff", 0, 1).step(0.01);
         common.add(material, "getOpacityFromRGB");
 
-        common
-          .addColor(state, "baseColor")
-          .onChange((v) => {
-            Oasis.guiToColor(v, material.baseColor);
-          })
-          .listen();
+        common.addColor(state, "baseColor").onChange((v) => {
+          Oasis.guiToColor(v, material.baseColor);
+        });
         common.addColor(state, "emissiveColor").onChange((v) => {
           Oasis.guiToColor(v, material.emissiveColor);
         });
