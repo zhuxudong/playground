@@ -68,6 +68,7 @@
     "demos": [
       { "src": "framebuffer-picker", "label": "帧拾取" },
       { "src": "probe-reflection", "label": "环境反射探针" },
+      { "src": "gltf-loader", "label": "GLTF Loader" },
       { "src": "light-probe-global", "label": "全局光照探针" },
       { "src": "ibl-baker", "label": "IBL Baker" }
     ]
