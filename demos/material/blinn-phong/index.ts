@@ -23,7 +23,7 @@ const rootEntity = scene.createRootEntity();
 
 // Create camera
 const cameraEntity = rootEntity.createChild("Camera");
-cameraEntity.transform.position = new Vector3(0, 10, 30);
+cameraEntity.transform.setPosition(0, 10, 30);
 cameraEntity.addComponent(Camera);
 const control = cameraEntity.addComponent(OrbitControl);
 control.target.y = 5;
@@ -59,9 +59,10 @@ engine.resourceManager
     const gltf = res[2] as GLTFResource;
 
     const { defaultSceneRoot } = gltf;
+    const rendererArray = new Array<MeshRenderer>();
+    const materials = new Array<BlinnPhongMaterial>();
+
     rootEntity.addChild(defaultSceneRoot);
-    const rendererArray: MeshRenderer[] = [];
-    const materials: BlinnPhongMaterial[] = [];
     defaultSceneRoot.getComponentsIncludeChildren(MeshRenderer, rendererArray);
 
     rendererArray.forEach((renderer) => {
@@ -74,44 +75,48 @@ engine.resourceManager
       materials.push(material);
     });
 
-    const state = {
-      baseColor: [255, 255, 255],
-      specularColor: [255, 255, 255],
-      shininess: 64,
-      normalIntensity: 1,
-      isTransparent: false,
-      opacity: 1
-    };
+    addGUI(materials);
+  });
 
-    gui.addColor(state, "baseColor").onChange((v) => {
-      materials.forEach((material) => {
-        material.baseColor.setValue(v[0] / 255, v[1] / 255, v[2] / 255, state.opacity);
-      });
-    });
+function addGUI(materials: BlinnPhongMaterial[]): void {
+  const state = {
+    baseColor: [255, 255, 255],
+    specularColor: [255, 255, 255],
+    shininess: 64,
+    normalIntensity: 1,
+    isTransparent: false,
+    opacity: 1
+  };
 
-    gui.addColor(state, "specularColor").onChange((v) => {
-      materials.forEach((material) => {
-        material.specularColor.setValue(v[0] / 255, v[1] / 255, v[2] / 255, 1);
-      });
-    });
-    gui.add(state, "shininess", 0, 100).onChange((v) => {
-      materials.forEach((material) => {
-        material.shininess = v;
-      });
-    });
-    gui.add(state, "normalIntensity", 0, 1, 0.1).onChange((v) => {
-      materials.forEach((material) => {
-        material.normalIntensity = v;
-      });
-    });
-    gui.add(state, "isTransparent").onChange((v) => {
-      materials.forEach((material) => {
-        material.isTransparent = v;
-      });
-    });
-    gui.add(state, "opacity", 0, 1, 0.1).onChange((v) => {
-      materials.forEach((material) => {
-        material.baseColor.a = v;
-      });
+  gui.addColor(state, "baseColor").onChange((v) => {
+    materials.forEach((material) => {
+      material.baseColor.setValue(v[0] / 255, v[1] / 255, v[2] / 255, state.opacity);
     });
   });
+
+  gui.addColor(state, "specularColor").onChange((v) => {
+    materials.forEach((material) => {
+      material.specularColor.setValue(v[0] / 255, v[1] / 255, v[2] / 255, 1);
+    });
+  });
+  gui.add(state, "shininess", 0, 100).onChange((v) => {
+    materials.forEach((material) => {
+      material.shininess = v;
+    });
+  });
+  gui.add(state, "normalIntensity", 0, 1, 0.1).onChange((v) => {
+    materials.forEach((material) => {
+      material.normalIntensity = v;
+    });
+  });
+  gui.add(state, "isTransparent").onChange((v) => {
+    materials.forEach((material) => {
+      material.isTransparent = v;
+    });
+  });
+  gui.add(state, "opacity", 0, 1, 0.1).onChange((v) => {
+    materials.forEach((material) => {
+      material.baseColor.a = v;
+    });
+  });
+}
