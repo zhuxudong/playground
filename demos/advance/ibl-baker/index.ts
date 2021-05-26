@@ -48,13 +48,6 @@ cameraNode.transform.position = new Vector3(0, 0, 10);
 const camera = cameraNode.addComponent(Camera);
 cameraNode.addComponent(OrbitControl);
 
-// Create sky
-const sky = background.sky;
-const skyMaterial = new SkyBoxMaterial(engine);
-background.mode = BackgroundMode.Sky;
-sky.material = skyMaterial;
-sky.mesh = PrimitiveMesh.createCuboid(engine, 1, 1, 1);
-
 engine.resourceManager
   .load<TextureCubeMap>({
     // url: "https://gw.alipayobjects.com/os/bmw-prod/10c5d68d-8580-4bd9-8795-6f1035782b94.bin", // sunset_1K
@@ -63,25 +56,22 @@ engine.resourceManager
     type: AssetType.HDR
   })
   .then((cubeMap) => {
-    cubeMap = IBLBaker.fromTextureCubeMap(cubeMap, true) as any;
+    const bakedCubeMap = IBLBaker.fromTextureCubeMap(cubeMap, true) as any;
 
     ambientLight.specularMode = SpecularMode.HDR;
-    // skyMaterial.textureCubeMap = cubeMap;
-    ambientLight.specularTexture = cubeMap;
+    ambientLight.specularTexture = bakedCubeMap;
 
-    // ambientLight.specularTexture = cubeMap;
-
-    // const sh = new SphericalHarmonics3();
-    // SphericalHarmonics3Baker.fromTextureCubeMap(cubeMap, sh, EncodingMode.RGBE);
-    // ambientLight.diffuseMode = DiffuseMode.SphericalHarmonics;
-    // ambientLight.diffuseSphericalHarmonics = sh;
+    const sh = new SphericalHarmonics3();
+    SphericalHarmonics3Baker.fromTextureCubeMap(cubeMap, sh, EncodingMode.RGBE);
+    ambientLight.diffuseMode = DiffuseMode.SphericalHarmonics;
+    ambientLight.diffuseSphericalHarmonics = sh;
 
     engine.run();
 
-    debugIBL(cubeMap);
+    debugIBL(cubeMap, bakedCubeMap);
   });
 
-function debugIBL(texture: TextureCubeMap) {
+function debugIBL(texture: TextureCubeMap, bakedTexture: TextureCubeMap) {
   Shader.create(
     "ibl debug test",
     `
@@ -122,6 +112,8 @@ function debugIBL(texture: TextureCubeMap) {
     }
     `
   );
+
+  let debugTexture = bakedTexture;
   const size = texture.width;
 
   // Create Sphere
@@ -164,7 +156,7 @@ function debugIBL(texture: TextureCubeMap) {
     for (let i = 0; i < 6; i++) {
       const material = planeMaterials[i];
       const data = new Uint8Array(mipSize * mipSize * 4);
-      texture.getPixelBuffer(TextureCubeFace.PositiveX + i, 0, 0, mipSize, mipSize, data, mipLevel);
+      debugTexture.getPixelBuffer(TextureCubeFace.PositiveX + i, 0, 0, mipSize, mipSize, data, mipLevel);
       const planeTexture = new Texture2D(engine, mipSize, mipSize, undefined, false); // no mipmap
       planeTexture.setPixelBuffer(data);
       material.shaderData.setTexture("u_env", planeTexture);
@@ -174,7 +166,24 @@ function debugIBL(texture: TextureCubeMap) {
 
   changeMip(0);
 
-  gui.add({ mipLevel: 0 }, "mipLevel", 0, texture.mipmapCount - 1).onChange((mipLevel: number) => {
+  const state = {
+    mipLevel: 0,
+    bake: true
+  };
+
+  gui.add(state, "mipLevel", 0, texture.mipmapCount - 1, 1).onChange((mipLevel: number) => {
     changeMip(mipLevel);
+  });
+
+  gui.add(state, "bake").onChange((v) => {
+    if (v) {
+      debugTexture = bakedTexture;
+      ambientLight.specularTexture = bakedTexture;
+      changeMip(state.mipLevel);
+    } else {
+      debugTexture = texture;
+      ambientLight.specularTexture = texture;
+      changeMip(state.mipLevel);
+    }
   });
 }
