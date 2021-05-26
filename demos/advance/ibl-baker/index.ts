@@ -67,13 +67,12 @@ engine.resourceManager
     type: AssetType.HDR
   })
   .then((cubeMap) => {
-    const bakedTexture = IBLBaker.fromTextureCubeMap(cubeMap, EncodingMode.RGBE, {
-      sampleCount: 1024
-    }) as any;
+    const bakedTexture = IBLBaker.fromTextureCubeMap(cubeMap, true) as any;
 
     ambientLight.specularMode = SpecularMode.HDR;
-    skyMaterial.textureCubeMap = bakedTexture;
+    // skyMaterial.textureCubeMap = bakedTexture;
     ambientLight.specularTexture = bakedTexture;
+
     // ambientLight.specularTexture = cubeMap;
 
     // const sh = new SphericalHarmonics3();
