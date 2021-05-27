@@ -25,6 +25,7 @@ import {
   TextureCubeFace,
   TextureCubeMap,
   TextureFilterMode,
+  TextureFormat,
   UnlitMaterial,
   Vector2,
   Vector3,
@@ -58,13 +59,13 @@ engine.resourceManager
   .then((cubeMap) => {
     const bakedCubeMap = IBLBaker.fromTextureCubeMap(cubeMap, true) as any;
 
-    ambientLight.specularMode = SpecularMode.HDR;
+    // ambientLight.specularMode = SpecularMode.HDR;
     ambientLight.specularTexture = bakedCubeMap;
 
-    const sh = new SphericalHarmonics3();
-    SphericalHarmonics3Baker.fromTextureCubeMap(cubeMap, sh, EncodingMode.RGBE);
-    ambientLight.diffuseMode = DiffuseMode.SphericalHarmonics;
-    ambientLight.diffuseSphericalHarmonics = sh;
+    // const sh = new SphericalHarmonics3();
+    // SphericalHarmonics3Baker.fromTextureCubeMap(cubeMap, sh, EncodingMode.RGBE);
+    // ambientLight.diffuseMode = DiffuseMode.SphericalHarmonics;
+    // ambientLight.diffuseSphericalHarmonics = sh;
 
     engine.run();
 
@@ -106,7 +107,7 @@ function debugIBL(texture: TextureCubeMap, bakedTexture: TextureCubeMap) {
         uv.y=  v_uv.x;
       }
       gl_FragColor = texture2D(u_env, uv);
-      gl_FragColor = RGBEToLinear(gl_FragColor);
+      // gl_FragColor = RGBEToLinear(gl_FragColor);
       gl_FragColor.rgb = pow(gl_FragColor.rgb, vec3(1.0 / 2.2));
       gl_FragColor.a= 1.0;
     }
@@ -155,9 +156,9 @@ function debugIBL(texture: TextureCubeMap, bakedTexture: TextureCubeMap) {
     const mipSize = size >> mipLevel;
     for (let i = 0; i < 6; i++) {
       const material = planeMaterials[i];
-      const data = new Uint8Array(mipSize * mipSize * 4);
+      const data = new Float32Array(mipSize * mipSize * 4 * 4);
       debugTexture.getPixelBuffer(TextureCubeFace.PositiveX + i, 0, 0, mipSize, mipSize, data, mipLevel);
-      const planeTexture = new Texture2D(engine, mipSize, mipSize, undefined, false); // no mipmap
+      const planeTexture = new Texture2D(engine, mipSize, mipSize, TextureFormat.R32G32B32A32, false); // no mipmap
       planeTexture.setPixelBuffer(data);
       material.shaderData.setTexture("u_env", planeTexture);
       material.shaderData.setInt("face", i);
