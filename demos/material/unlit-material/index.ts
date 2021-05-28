@@ -1,5 +1,7 @@
 import { OrbitControl } from "@oasis-engine/controls";
-import { Animation, Camera, GLTFResource, Vector3, WebGLEngine } from "oasis-engine";
+import * as dat from "dat.gui";
+import { Animation, Camera, GLTFResource, UnlitMaterial, Vector3, WebGLEngine } from "oasis-engine";
+const gui = new dat.GUI();
 
 // Create engine object
 const engine = new WebGLEngine("o3-demo");
@@ -24,6 +26,17 @@ engine.resourceManager
 
     const animator = defaultSceneRoot.getComponent(Animation);
     animator.playAnimationClip(animations[0].name);
-
-    console.log(materials);
+    addGUI(materials as UnlitMaterial[]);
   });
+
+function addGUI(materials: UnlitMaterial[]) {
+  const state = {
+    baseColor: [255, 255, 255]
+  };
+
+  gui.addColor(state, "baseColor").onChange((v) => {
+    materials.forEach((material) => {
+      material.baseColor.setValue(v[0] / 255, v[1] / 255, v[2] / 255, 1);
+    });
+  });
+}
