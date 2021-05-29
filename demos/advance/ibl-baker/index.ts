@@ -1,71 +1,60 @@
-import { EncodingMode, SphericalHarmonics3Baker, IBLBaker } from "@oasis-engine/baker";
+import { IBLBaker, SphericalHarmonics3Baker } from "@oasis-engine/baker";
 import { OrbitControl } from "@oasis-engine/controls";
 import * as dat from "dat.gui";
 import {
   AssetType,
-  BackgroundMode,
   Camera,
   CullMode,
   DiffuseMode,
   Entity,
-  Layer,
+  GLCapabilityType,
   Logger,
   Material,
   MeshRenderer,
   PBRMaterial,
   PrimitiveMesh,
-  RenderBufferDepthFormat,
-  RenderColorTexture,
-  RenderTarget,
   Shader,
-  SkyBoxMaterial,
-  SpecularMode,
   SphericalHarmonics3,
   Texture2D,
   TextureCubeFace,
   TextureCubeMap,
-  TextureFilterMode,
   TextureFormat,
-  UnlitMaterial,
-  Vector2,
   Vector3,
-  WebGLEngine,
-  WebGLMode
+  WebGLEngine
 } from "oasis-engine";
 Logger.enable();
 
 const gui = new dat.GUI();
 //-- create engine object
-let engine = new WebGLEngine("o3-demo", { alpha: false });
+const engine = new WebGLEngine("o3-demo");
 engine.canvas.resizeByClientSize();
 
-let scene = engine.sceneManager.activeScene;
-const { ambientLight, background } = scene;
+const scene = engine.sceneManager.activeScene;
+const { ambientLight } = scene;
 const rootEntity = scene.createRootEntity();
 
 //Create camera
-let cameraNode = rootEntity.createChild("camera_node");
+const cameraNode = rootEntity.createChild("camera_node");
 cameraNode.transform.position = new Vector3(0, 0, 10);
-const camera = cameraNode.addComponent(Camera);
+cameraNode.addComponent(Camera);
 cameraNode.addComponent(OrbitControl);
 
 engine.resourceManager
   .load<TextureCubeMap>({
-    // url: "https://gw.alipayobjects.com/os/bmw-prod/10c5d68d-8580-4bd9-8795-6f1035782b94.bin", // sunset_1K
+    url: "https://gw.alipayobjects.com/os/bmw-prod/10c5d68d-8580-4bd9-8795-6f1035782b94.bin", // sunset_1K
     // url: "https://gw.alipayobjects.com/os/bmw-prod/20d58ffa-c7da-4c54-8980-4efaf91a0239.bin",// pisa_1K
-    url: "https://gw.alipayobjects.com/os/bmw-prod/59b28d9f-7589-4d47-86b0-52c50b973b10.bin", // footPrint_2K
+    // url: "https://gw.alipayobjects.com/os/bmw-prod/59b28d9f-7589-4d47-86b0-52c50b973b10.bin", // footPrint_2K
     type: AssetType.HDR
   })
   .then((cubeMap) => {
-    const bakedCubeMap = IBLBaker.fromTextureCubeMap(cubeMap, true) as any;
+    const bakedCubeMap = IBLBaker.fromTextureCubeMap(cubeMap) as any;
 
-    // ambientLight.specularMode = SpecularMode.HDR;
-    ambientLight.specularTexture = bakedCubeMap;
+    ambientLight.specularTexture = cubeMap;
 
-    // const sh = new SphericalHarmonics3();
-    // SphericalHarmonics3Baker.fromTextureCubeMap(cubeMap, sh, EncodingMode.RGBE);
-    // ambientLight.diffuseMode = DiffuseMode.SphericalHarmonics;
-    // ambientLight.diffuseSphericalHarmonics = sh;
+    const sh = new SphericalHarmonics3();
+    SphericalHarmonics3Baker.fromTextureCubeMap(cubeMap, sh);
+    ambientLight.diffuseMode = DiffuseMode.SphericalHarmonics;
+    ambientLight.diffuseSphericalHarmonics = sh;
 
     engine.run();
 
@@ -73,6 +62,8 @@ engine.resourceManager
   });
 
 function debugIBL(texture: TextureCubeMap, bakedTexture: TextureCubeMap) {
+  const supportFloatTexture = engine._hardwareRenderer.canIUse(GLCapabilityType.textureFloat);
+
   Shader.create(
     "ibl debug test",
     `
@@ -156,9 +147,18 @@ function debugIBL(texture: TextureCubeMap, bakedTexture: TextureCubeMap) {
     const mipSize = size >> mipLevel;
     for (let i = 0; i < 6; i++) {
       const material = planeMaterials[i];
-      const data = new Float32Array(mipSize * mipSize * 4 * 4);
+      const data = supportFloatTexture
+        ? new Float32Array(mipSize * mipSize * 4 * 4)
+        : new Uint8Array(mipSize * mipSize * 4 * 4);
+      const planeTexture = new Texture2D(
+        engine,
+        mipSize,
+        mipSize,
+        supportFloatTexture ? TextureFormat.R32G32B32A32 : undefined,
+        false
+      ); // no mipmap
+
       debugTexture.getPixelBuffer(TextureCubeFace.PositiveX + i, 0, 0, mipSize, mipSize, data, mipLevel);
-      const planeTexture = new Texture2D(engine, mipSize, mipSize, TextureFormat.R32G32B32A32, false); // no mipmap
       planeTexture.setPixelBuffer(data);
       material.shaderData.setTexture("u_env", planeTexture);
       material.shaderData.setInt("face", i);
@@ -180,11 +180,10 @@ function debugIBL(texture: TextureCubeMap, bakedTexture: TextureCubeMap) {
     if (v) {
       debugTexture = bakedTexture;
       ambientLight.specularTexture = bakedTexture;
-      changeMip(state.mipLevel);
     } else {
       debugTexture = texture;
       ambientLight.specularTexture = texture;
-      changeMip(state.mipLevel);
     }
+    changeMip(state.mipLevel);
   });
 }
