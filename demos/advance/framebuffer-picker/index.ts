@@ -1,86 +1,78 @@
+import { IBLBaker, SphericalHarmonics3Baker } from "@oasis-engine/baker";
 import { OrbitControl } from "@oasis-engine/controls";
 import { FramebufferPicker } from "@oasis-engine/framebuffer-picker";
 import {
   AssetType,
   Camera,
-  Color,
+  DiffuseMode,
   GLTFResource,
-  LoadItem,
+  SphericalHarmonics3,
   TextureCubeMap,
   Vector3,
-  WebGLEngine,
-  DiffuseMode
+  WebGLEngine
 } from "oasis-engine";
 
 const engine = new WebGLEngine("o3-demo");
 engine.canvas.resizeByClientSize();
 const scene = engine.sceneManager.activeScene;
-const rootNode = scene.createRootEntity();
+const rootEntity = scene.createRootEntity();
 
 //-- create camera
-let cameraNode = rootNode.createChild("camera_node");
+let cameraNode = rootEntity.createChild("camera_node");
 cameraNode.transform.position = new Vector3(0, 0, 30);
 const camera = cameraNode.addComponent(Camera);
 cameraNode.addComponent(OrbitControl);
 
-const resources: LoadItem[] = [
-  { url: "https://gw.alipayobjects.com/os/bmw-prod/150e44f6-7810-4c45-8029-3575d36aff30.gltf" },
-  {
-    urls: [
-      "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*Bk5FQKGOir4AAAAAAAAAAAAAARQnAQ",
-      "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*_cPhR7JMDjkAAAAAAAAAAAAAARQnAQ",
-      "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*trqjQp1nOMQAAAAAAAAAAAAAARQnAQ",
-      "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*_RXwRqwMK3EAAAAAAAAAAAAAARQnAQ",
-      "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*q4Q6TroyuXcAAAAAAAAAAAAAARQnAQ",
-      "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*DP5QTbTSAYgAAAAAAAAAAAAAARQnAQ"
-    ],
-    type: AssetType.TextureCube
-  },
-  {
-    urls: [
-      "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*5w6_Rr6ML6IAAAAAAAAAAAAAARQnAQ",
-      "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*TiT2TbN5cG4AAAAAAAAAAAAAARQnAQ",
-      "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*8GF6Q4LZefUAAAAAAAAAAAAAARQnAQ",
-      "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*D5pdRqUHC3IAAAAAAAAAAAAAARQnAQ",
-      "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*_FooTIp6pNIAAAAAAAAAAAAAARQnAQ",
-      "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*CYGZR7ogZfoAAAAAAAAAAAAAARQnAQ"
-    ],
-    type: AssetType.TextureCube
-  }
-];
+Promise.all([
+  engine.resourceManager
+    .load<GLTFResource>("https://gw.alipayobjects.com/os/bmw-prod/83219f61-7d20-4704-890a-60eb92aa6159.gltf")
+    .then((gltf) => {
+      rootEntity.addChild(gltf.defaultSceneRoot);
+      console.log(gltf);
+      return gltf;
+    }),
+  engine.resourceManager
+    .load<TextureCubeMap>({
+      url: "https://gw.alipayobjects.com/os/bmw-prod/10c5d68d-8580-4bd9-8795-6f1035782b94.bin", // sunset_1K
+      // url: "https://gw.alipayobjects.com/os/bmw-prod/20d58ffa-c7da-4c54-8980-4efaf91a0239.bin",// pisa_1K
+      // url: "https://gw.alipayobjects.com/os/bmw-prod/59b28d9f-7589-4d47-86b0-52c50b973b10.bin" // footPrint_2K
+      type: AssetType.HDR
+    })
+    .then((cubeMap) => {
+      cubeMap = IBLBaker.fromTextureCubeMap(cubeMap) as any;
+      scene.ambientLight.specularTexture = cubeMap;
 
-engine.resourceManager.load(resources).then((res) => {
+      const sh = new SphericalHarmonics3();
+      SphericalHarmonics3Baker.fromTextureCubeMap(cubeMap, sh);
+      scene.ambientLight.diffuseMode = DiffuseMode.SphericalHarmonics;
+      scene.ambientLight.diffuseSphericalHarmonics = sh;
+    })
+]).then((res) => {
   const gltf = <GLTFResource>res[0];
 
   let mesh = gltf.meshes[0];
   for (let x = 0; x < 5; x++) {
     for (let y = 0; y < 5; y++) {
-      let testNode = rootNode.createChild("test_mesh" + x + y);
+      let testNode = rootEntity.createChild("test_mesh" + x + y);
       testNode.addChild(gltf.defaultSceneRoot.clone());
       testNode.transform.position = new Vector3((x - 2) * 5, (y - 2) * 5, 0);
     }
   }
 
-  const ambientLight = scene.ambientLight;
-  ambientLight.diffuseMode = DiffuseMode.Texture;
-  ambientLight.diffuseTexture = <TextureCubeMap>res[1];
-  ambientLight.specularTexture = <TextureCubeMap>res[2];
-
   // framebuffer picker
   let lastMaterial;
   let laseBaseColor;
-  let framebufferPicker = rootNode.addComponent(FramebufferPicker);
+  let framebufferPicker = rootEntity.addComponent(FramebufferPicker);
   framebufferPicker.camera = camera;
   framebufferPicker.onPick = (obj) => {
     if (lastMaterial) lastMaterial.baseColor = laseBaseColor;
 
     if (obj) {
-      const { primitive, component } = obj;
-      let material = component.getInstanceMaterial();
+      let material = obj.component.getInstanceMaterial();
 
       lastMaterial = material;
       laseBaseColor = material.baseColor;
-      material.baseColor = new Color(1, 0, 0, 1);
+      material.baseColor.setValue(1, 0, 0, 1);
     }
   };
 

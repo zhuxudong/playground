@@ -1,4 +1,4 @@
-import { EncodingMode, SphericalHarmonics3Baker } from "@oasis-engine/baker";
+import { IBLBaker, SphericalHarmonics3Baker } from "@oasis-engine/baker";
 import { OrbitControl } from "@oasis-engine/controls";
 import * as dat from "dat.gui";
 import {
@@ -12,7 +12,6 @@ import {
   Logger,
   PrimitiveMesh,
   SkyBoxMaterial,
-  SpecularMode,
   SphericalHarmonics3,
   TextureCubeMap,
   Vector3,
@@ -85,22 +84,12 @@ Promise.all([
       url: "https://gw.alipayobjects.com/os/bmw-prod/59b28d9f-7589-4d47-86b0-52c50b973b10.bin" // footPrint_2K
     })
     .then((cubeMap) => {
-      console.log("HDR to cubeMap:", cubeMap);
-
-      // const sphereEntity = rootEntity.createChild("sphere");
-      // const sphereRender = sphereEntity.addComponent(MeshRenderer);
-      // const geometry = PrimitiveMesh.createPlane(engine, 10, 10);
-      // sphereRender.mesh = geometry;
-      // const material = new UnlitMaterial(engine);
-      // material.baseTexture = cubeMap;
-      // sphereRender.setMaterial(material);
-
+      cubeMap = IBLBaker.fromTextureCubeMap(cubeMap) as any;
       ambientLight.specularTexture = cubeMap;
-      ambientLight.specularMode = SpecularMode.HDR;
       skyMaterial.textureCubeMap = cubeMap;
 
       const sh = new SphericalHarmonics3();
-      SphericalHarmonics3Baker.fromTextureCubeMap(cubeMap, sh, EncodingMode.RGBE);
+      SphericalHarmonics3Baker.fromTextureCubeMap(cubeMap, sh);
       ambientLight.diffuseMode = DiffuseMode.SphericalHarmonics;
       ambientLight.diffuseSphericalHarmonics = sh;
     })

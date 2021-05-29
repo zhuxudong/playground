@@ -1,3 +1,4 @@
+import { IBLBaker, SphericalHarmonics3Baker } from "@oasis-engine/baker";
 import { OrbitControl } from "@oasis-engine/controls";
 import * as dat from "dat.gui";
 import {
@@ -15,6 +16,7 @@ import {
   PrimitiveMesh,
   Script,
   SkyBoxMaterial,
+  SphericalHarmonics3,
   TextureCubeMap,
   Vector3,
   WebGLEngine
@@ -50,44 +52,31 @@ sky.mesh = PrimitiveMesh.createCuboid(engine, 1, 1, 1);
 async function loadModel() {
   return Promise.all([
     engine.resourceManager
-      .load<GLTFResource>("https://gw.alipayobjects.com/os/bmw-prod/150e44f6-7810-4c45-8029-3575d36aff30.gltf")
+      .load<GLTFResource>("https://gw.alipayobjects.com/os/bmw-prod/83219f61-7d20-4704-890a-60eb92aa6159.gltf")
       .then((gltf) => {
         rootEntity.addChild(gltf.defaultSceneRoot);
         console.log(gltf);
       }),
     engine.resourceManager
       .load<TextureCubeMap>({
-        urls: [
-          "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*Bk5FQKGOir4AAAAAAAAAAAAAARQnAQ",
-          "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*_cPhR7JMDjkAAAAAAAAAAAAAARQnAQ",
-          "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*trqjQp1nOMQAAAAAAAAAAAAAARQnAQ",
-          "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*_RXwRqwMK3EAAAAAAAAAAAAAARQnAQ",
-          "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*q4Q6TroyuXcAAAAAAAAAAAAAARQnAQ",
-          "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*DP5QTbTSAYgAAAAAAAAAAAAAARQnAQ"
-        ],
-        type: AssetType.TextureCube
+        url: "https://gw.alipayobjects.com/os/bmw-prod/10c5d68d-8580-4bd9-8795-6f1035782b94.bin", // sunset_1K
+        // url: "https://gw.alipayobjects.com/os/bmw-prod/20d58ffa-c7da-4c54-8980-4efaf91a0239.bin",// pisa_1K
+        // url: "https://gw.alipayobjects.com/os/bmw-prod/59b28d9f-7589-4d47-86b0-52c50b973b10.bin" // footPrint_2K
+        type: AssetType.HDR
       })
       .then((cubeMap) => {
-        ambientLight.diffuseMode = DiffuseMode.Texture;
-        ambientLight.diffuseTexture = cubeMap;
-      }),
-    engine.resourceManager
-      .load<TextureCubeMap>({
-        urls: [
-          "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*5w6_Rr6ML6IAAAAAAAAAAAAAARQnAQ",
-          "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*TiT2TbN5cG4AAAAAAAAAAAAAARQnAQ",
-          "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*8GF6Q4LZefUAAAAAAAAAAAAAARQnAQ",
-          "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*D5pdRqUHC3IAAAAAAAAAAAAAARQnAQ",
-          "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*_FooTIp6pNIAAAAAAAAAAAAAARQnAQ",
-          "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*CYGZR7ogZfoAAAAAAAAAAAAAARQnAQ"
-        ],
-        type: AssetType.TextureCube
-      })
-      .then((cubeMap) => {
+        cubeMap = IBLBaker.fromTextureCubeMap(cubeMap) as any;
         ambientLight.specularTexture = cubeMap;
         skyMaterial.textureCubeMap = cubeMap;
+
+        const sh = new SphericalHarmonics3();
+        SphericalHarmonics3Baker.fromTextureCubeMap(cubeMap, sh);
+        ambientLight.diffuseMode = DiffuseMode.SphericalHarmonics;
+        ambientLight.diffuseSphericalHarmonics = sh;
       })
-  ]).then(() => {});
+  ]).then(() => {
+    engine.run();
+  });
 }
 
 function createSphere(material) {

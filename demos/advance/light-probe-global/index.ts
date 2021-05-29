@@ -1,4 +1,4 @@
-import { SphericalHarmonics3Baker, EncodingMode } from "@oasis-engine/baker";
+import { SphericalHarmonics3Baker } from "@oasis-engine/baker";
 import { OrbitControl } from "@oasis-engine/controls";
 import * as dat from "dat.gui";
 import {
@@ -7,7 +7,6 @@ import {
   Camera,
   Color,
   DiffuseMode,
-  SpecularMode,
   DirectLight,
   Logger,
   MeshRenderer,
@@ -74,13 +73,12 @@ engine.resourceManager
     scene.ambientLight.specularTexture = cubeMap;
 
     const sh = new SphericalHarmonics3();
-    SphericalHarmonics3Baker.fromTextureCubeMap(cubeMap, sh, EncodingMode.RGBE);
+    SphericalHarmonics3Baker.fromTextureCubeMap(cubeMap, sh);
     scene.ambientLight.diffuseSphericalHarmonics = sh;
     scene.ambientLight.diffuseMode = DiffuseMode.SphericalHarmonics;
-    scene.ambientLight.specularMode = SpecularMode.HDR;
     gui
       .add({ bake: true }, "bake")
-      .name("烘焙")
+      .name("漫反射烘焙")
       .onChange((v) => {
         if (v) {
           scene.ambientLight.diffuseMode = DiffuseMode.SphericalHarmonics;
