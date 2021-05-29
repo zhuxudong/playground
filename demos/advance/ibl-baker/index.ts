@@ -38,30 +38,48 @@ const cameraNode = rootEntity.createChild("camera_node");
 cameraNode.transform.position = new Vector3(0, 0, 10);
 cameraNode.addComponent(Camera);
 cameraNode.addComponent(OrbitControl);
-
-engine.resourceManager
-  .load<TextureCubeMap>({
+Promise.all([
+  engine.resourceManager.load<TextureCubeMap>({
+    urls: [
+      "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*5bs-Sb80qcUAAAAAAAAAAAAAARQnAQ",
+      "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*rLUCT4VPBeEAAAAAAAAAAAAAARQnAQ",
+      "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*LjSHTI5iSPoAAAAAAAAAAAAAARQnAQ",
+      "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*pgCvTJ85RUYAAAAAAAAAAAAAARQnAQ",
+      "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*0BKxR6jgRDAAAAAAAAAAAAAAARQnAQ",
+      "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*Pir4RoxLm3EAAAAAAAAAAAAAARQnAQ"
+    ],
+    type: AssetType.TextureCube
+  }),
+  engine.resourceManager.load<TextureCubeMap>({
     url: "https://gw.alipayobjects.com/os/bmw-prod/10c5d68d-8580-4bd9-8795-6f1035782b94.bin", // sunset_1K
     // url: "https://gw.alipayobjects.com/os/bmw-prod/20d58ffa-c7da-4c54-8980-4efaf91a0239.bin",// pisa_1K
     // url: "https://gw.alipayobjects.com/os/bmw-prod/59b28d9f-7589-4d47-86b0-52c50b973b10.bin", // footPrint_2K
     type: AssetType.HDR
   })
-  .then((cubeMap) => {
-    const bakedCubeMap = IBLBaker.fromTextureCubeMap(cubeMap) as any;
+]).then((textures: TextureCubeMap[]) => {
+  const ldrCubeMap = textures[0];
+  const hdrCubeMap = textures[1];
+  const bakedLDRCubeMap = IBLBaker.fromTextureCubeMap(ldrCubeMap) as any;
+  const bakedHDRCubeMap = IBLBaker.fromTextureCubeMap(hdrCubeMap) as any;
 
-    ambientLight.specularTexture = cubeMap;
+  ambientLight.specularTexture = bakedHDRCubeMap;
 
-    const sh = new SphericalHarmonics3();
-    SphericalHarmonics3Baker.fromTextureCubeMap(cubeMap, sh);
-    ambientLight.diffuseMode = DiffuseMode.SphericalHarmonics;
-    ambientLight.diffuseSphericalHarmonics = sh;
+  const sh = new SphericalHarmonics3();
+  SphericalHarmonics3Baker.fromTextureCubeMap(hdrCubeMap, sh);
+  ambientLight.diffuseMode = DiffuseMode.SphericalHarmonics;
+  ambientLight.diffuseSphericalHarmonics = sh;
 
-    engine.run();
+  engine.run();
 
-    debugIBL(cubeMap, bakedCubeMap);
-  });
+  debugIBL(ldrCubeMap, hdrCubeMap, bakedLDRCubeMap, bakedHDRCubeMap);
+});
 
-function debugIBL(texture: TextureCubeMap, bakedTexture: TextureCubeMap) {
+function debugIBL(
+  ldrCubeMap: TextureCubeMap,
+  hdrCubeMap: TextureCubeMap,
+  bakedLDRCubeMap: TextureCubeMap,
+  bakedHDRCubeMap: TextureCubeMap
+) {
   const supportFloatTexture = engine._hardwareRenderer.canIUse(GLCapabilityType.textureFloat);
 
   Shader.create(
@@ -87,6 +105,12 @@ function debugIBL(texture: TextureCubeMap, bakedTexture: TextureCubeMap) {
       return vec4( step(0.0, value.a) * value.rgb * exp2( value.a * 255.0 - 128.0 ), 1.0 );
     }
   
+    vec4 SRGBtoLinear(vec4 srgbIn) {
+      vec3 bLess = step(vec3(0.04045), srgbIn.xyz);
+      vec3 linOut = mix(srgbIn.xyz/vec3(12.92), pow((srgbIn.xyz+vec3(0.055))/vec3(1.055), vec3(2.4)), bLess);
+
+      return vec4(linOut, srgbIn.a);
+    }
 
     void main(){
       vec2 uv = v_uv;
@@ -98,15 +122,20 @@ function debugIBL(texture: TextureCubeMap, bakedTexture: TextureCubeMap) {
         uv.y=  v_uv.x;
       }
       gl_FragColor = texture2D(u_env, uv);
-      // gl_FragColor = RGBEToLinear(gl_FragColor);
+
+      #ifdef RGBE
+        gl_FragColor = RGBEToLinear(gl_FragColor);
+      #elif defined(GAMMA)
+        gl_FragColor = SRGBtoLinear(gl_FragColor);
+      #endif
+
       gl_FragColor.rgb = pow(gl_FragColor.rgb, vec3(1.0 / 2.2));
-      gl_FragColor.a= 1.0;
     }
     `
   );
 
-  let debugTexture = bakedTexture;
-  const size = texture.width;
+  let debugTexture = bakedHDRCubeMap;
+  const size = debugTexture.width;
 
   // Create Sphere
   const sphereEntity = rootEntity.createChild("box");
@@ -147,14 +176,15 @@ function debugIBL(texture: TextureCubeMap, bakedTexture: TextureCubeMap) {
     const mipSize = size >> mipLevel;
     for (let i = 0; i < 6; i++) {
       const material = planeMaterials[i];
-      const data = supportFloatTexture
-        ? new Float32Array(mipSize * mipSize * 4 * 4)
-        : new Uint8Array(mipSize * mipSize * 4 * 4);
+      const data =
+        debugTexture._isHDR && supportFloatTexture
+          ? new Float32Array(mipSize * mipSize * 4 * 4)
+          : new Uint8Array(mipSize * mipSize * 4 * 4);
       const planeTexture = new Texture2D(
         engine,
         mipSize,
         mipSize,
-        supportFloatTexture ? TextureFormat.R32G32B32A32 : undefined,
+        debugTexture._isHDR && supportFloatTexture ? TextureFormat.R32G32B32A32 : undefined,
         false
       ); // no mipmap
 
@@ -162,6 +192,13 @@ function debugIBL(texture: TextureCubeMap, bakedTexture: TextureCubeMap) {
       planeTexture.setPixelBuffer(data);
       material.shaderData.setTexture("u_env", planeTexture);
       material.shaderData.setInt("face", i);
+      material.shaderData.disableMacro("RGBE");
+      material.shaderData.disableMacro("GAMMA");
+      if (debugTexture._isHDR && !supportFloatTexture) {
+        material.shaderData.enableMacro("RGBE");
+      } else if (!debugTexture._isHDR) {
+        material.shaderData.enableMacro("GAMMA");
+      }
     }
   }
 
@@ -169,21 +206,33 @@ function debugIBL(texture: TextureCubeMap, bakedTexture: TextureCubeMap) {
 
   const state = {
     mipLevel: 0,
-    bake: true
+    bake: true,
+    HDR: true
   };
 
-  gui.add(state, "mipLevel", 0, texture.mipmapCount - 1, 1).onChange((mipLevel: number) => {
+  gui.add(state, "mipLevel", 0, debugTexture.mipmapCount - 1, 1).onChange((mipLevel: number) => {
     changeMip(mipLevel);
   });
 
   gui.add(state, "bake").onChange((v) => {
     if (v) {
-      debugTexture = bakedTexture;
-      ambientLight.specularTexture = bakedTexture;
+      debugTexture = state.HDR ? bakedHDRCubeMap : bakedLDRCubeMap;
     } else {
-      debugTexture = texture;
-      ambientLight.specularTexture = texture;
+      debugTexture = state.HDR ? hdrCubeMap : ldrCubeMap;
     }
+    ambientLight.specularTexture = debugTexture;
+
+    changeMip(state.mipLevel);
+  });
+
+  gui.add(state, "HDR").onChange((v) => {
+    if (v) {
+      debugTexture = state.bake ? bakedHDRCubeMap : hdrCubeMap;
+    } else {
+      debugTexture = state.bake ? bakedLDRCubeMap : ldrCubeMap;
+    }
+
+    ambientLight.specularTexture = debugTexture;
     changeMip(state.mipLevel);
   });
 }
