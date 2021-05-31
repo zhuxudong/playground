@@ -17,31 +17,38 @@ import {
   WebGLEngine
 } from "oasis-engine";
 
+const gui = new dat.GUI();
+
 //-- create engine object
-let engine = new WebGLEngine("o3-demo");
+const engine = new WebGLEngine("o3-demo");
 engine.canvas.resizeByClientSize();
 
-let scene = engine.sceneManager.activeScene;
+const scene = engine.sceneManager.activeScene;
 const { ambientLight, background } = scene;
 const rootEntity = scene.createRootEntity();
 
 const color2glColor = (color) => new Color(color[0] / 255, color[1] / 255, color[2] / 255);
-const glColor2Color = (color) => new Color(color[0] * 255, color[1] * 255, color[2] * 255);
-const gui = new dat.GUI();
 gui.domElement.style = "position:absolute;top:0px;left:50vw";
 
-let envFolder = gui.addFolder("EnvironmentMapLight");
+const envFolder = gui.addFolder("EnvironmentMapLight");
 envFolder.add(ambientLight, "specularIntensity", 0, 1);
 envFolder.add(ambientLight, "diffuseIntensity", 0, 1);
 
-let directLightColor = { color: [255, 255, 255] };
+const lightState = { color: [255, 255, 255], enabled: true, intensity: 1 };
 let directLightNode = rootEntity.createChild("dir_light");
+let directLightNode2 = rootEntity.createChild("dir_light2");
+directLightNode.transform.setRotation(30, 0, 0);
+directLightNode2.transform.setRotation(-30, 180, 0);
 let directLight = directLightNode.addComponent(DirectLight);
-directLight.color = new Color(1, 1, 1);
-let dirFolder = gui.addFolder("DirectionalLight1");
-dirFolder.add(directLight, "enabled");
-dirFolder.addColor(directLightColor, "color").onChange((v) => (directLight.color = color2glColor(v)));
-dirFolder.add(directLight, "intensity", 0, 1);
+let directLight2 = directLightNode2.addComponent(DirectLight);
+let dirFolder = gui.addFolder("DirectionalLight");
+dirFolder.add(lightState, "enabled").onChange((v) => {
+  directLight.enabled = directLight2.enabled = v;
+});
+dirFolder.addColor(lightState, "color").onChange((v) => (directLight.color = directLight2.color = color2glColor(v)));
+dirFolder.add(lightState, "intensity", 0, 1).onChange((v) => {
+  directLight.intensity = directLight2.intensity = v;
+});
 
 //Create camera
 let cameraNode = rootEntity.createChild("camera_node");
@@ -65,9 +72,9 @@ Promise.all([
     }),
   engine.resourceManager
     .load<TextureCubeMap>({
-      url: "https://gw.alipayobjects.com/os/bmw-prod/10c5d68d-8580-4bd9-8795-6f1035782b94.bin", // sunset_1K
+      // url: "https://gw.alipayobjects.com/os/bmw-prod/10c5d68d-8580-4bd9-8795-6f1035782b94.bin", // sunset_1K
       // url: "https://gw.alipayobjects.com/os/bmw-prod/20d58ffa-c7da-4c54-8980-4efaf91a0239.bin",// pisa_1K
-      // url: "https://gw.alipayobjects.com/os/bmw-prod/59b28d9f-7589-4d47-86b0-52c50b973b10.bin" // footPrint_2K
+      url: "https://gw.alipayobjects.com/os/bmw-prod/59b28d9f-7589-4d47-86b0-52c50b973b10.bin", // footPrint_2K
       type: AssetType.HDR
     })
     .then((cubeMap) => {
