@@ -34,13 +34,6 @@ envFolder.add(scene.ambientLight, "specularIntensity", 0, 1);
 envFolder.add(scene.ambientLight, "diffuseIntensity", 0, 1);
 envFolder.open();
 
-// Direct light
-let directLightNode = rootEntity.createChild("dir_light");
-let directLight = directLightNode.addComponent(DirectLight);
-directLightNode.transform.rotate(-30, 0, 0);
-directLight.color = new Color(1, 1, 1);
-directLight.intensity = 0.2;
-
 // Create camera
 let cameraNode = rootEntity.createChild("camera_node");
 cameraNode.transform.position = new Vector3(-3, 0, 3);
