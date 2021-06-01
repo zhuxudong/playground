@@ -15,7 +15,7 @@ import {
 } from "oasis-engine";
 
 // Create engine.
-const engine = new WebGLEngine("o3-demo", { stencil: true });
+const engine = new WebGLEngine("o3-demo");
 engine.canvas.resizeByClientSize();
 
 // Create root entity.
