@@ -1,5 +1,12 @@
 [
-  { "group": "Transform", "src": "transform", "demos": [{ "src": "transform-basic", "label": "Transform Basic" }] },
+  {
+    "group": "Basic",
+    "src": "basic",
+    "demos": [
+      { "src": "transform-basic", "label": "Transform Basic" },
+      { "src": "script-basic", "label": "Script Basic" }
+    ]
+  },
   {
     "group": "Camera",
     "src": "camera",
@@ -46,11 +53,7 @@
       { "src": "blinn-phong", "label": "Blinn Phong Material" }
     ]
   },
-  {
-    "group": "Texture",
-    "src": "texture",
-    "demos": [{ "src": "wrap-mode", "label": "Wrap Mode" }]
-  },
+  { "group": "Texture", "src": "texture", "demos": [{ "src": "wrap-mode", "label": "Wrap Mode" }] },
   {
     "group": "Animation",
     "src": "animation",
