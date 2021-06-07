@@ -18,7 +18,7 @@ import {
 } from "oasis-engine";
 
 // Create engine and get root entity.
-const engine = new WebGLEngine("o3-demo");
+const engine = new WebGLEngine("canvas");
 engine.canvas.resizeByClientSize();
 
 const rootEntity = engine.sceneManager.activeScene.createRootEntity("Root");

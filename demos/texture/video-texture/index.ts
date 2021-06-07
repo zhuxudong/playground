@@ -16,7 +16,7 @@ import {
 } from "oasis-engine";
 
 //-- create engine object
-let engine = new WebGLEngine("o3-demo");
+let engine = new WebGLEngine("canvas");
 engine.canvas.resizeByClientSize();
 
 let scene = engine.sceneManager.activeScene;
