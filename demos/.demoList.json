@@ -42,6 +42,7 @@
       { "src": "pbr", "label": "PBR 材质" },
       { "src": "pbr-base", "label": "PBR-基本" },
       { "src": "shader-water", "label": "自定义材质-水" },
+      { "src": "unlit-material", "label": "Unlit Material" }
       { "src": "blinn-phong", "label": "Blinn-Phong Material" }
     ]
   },
