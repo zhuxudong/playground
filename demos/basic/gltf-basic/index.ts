@@ -1,5 +1,5 @@
 import { OrbitControl } from "@oasis-engine/controls";
-import { Camera, GLTFResource, Vector3, WebGLEngine } from "oasis-engine";
+import { Camera, GLTFResource, WebGLEngine } from "oasis-engine";
 
 // 创建画布
 const engine = new WebGLEngine("canvas");
@@ -12,7 +12,6 @@ const cameraEntity = rootEntity.createChild("camera");
 cameraEntity.addComponent(Camera);
 cameraEntity.transform.setPosition(3, 3, 3);
 cameraEntity.addComponent(OrbitControl);
-
 
 engine.sceneManager.activeScene.ambientLight.diffuseSolidColor.setValue(1, 1, 1, 1);
 
