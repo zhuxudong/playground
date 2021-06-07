@@ -39,7 +39,7 @@
     "src": "material",
     "demos": [
       { "src": "tiling-offset", "label": "Tiling Offset" },
-      { "src": "pbr", "label": "PBR Helmet" },
+      { "src": "pbr-helmet", "label": "PBR Helmet" },
       { "src": "pbr-base", "label": "PBR Base" },
       { "src": "shader-water", "label": "Shader Water" },
       { "src": "unlit-material", "label": "Unlit Material" },
