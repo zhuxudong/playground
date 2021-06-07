@@ -24,7 +24,7 @@ const camera = cameraNode.addComponent(Camera);
 cameraNode.addComponent(OrbitControl);
 
 const resources: LoadItem[] = [
-  { url: "https://gw.alipayobjects.com/os/bmw-prod/83219f61-7d20-4704-890a-60eb92aa6159.gltf" },
+  { url: "https://gw.alipayobjects.com/os/bmw-prod/150e44f6-7810-4c45-8029-3575d36aff30.gltf" },
   {
     urls: [
       "https://gw.alipayobjects.com/mdn/rms_7c464e/afts/img/A*Bk5FQKGOir4AAAAAAAAAAAAAARQnAQ",
