@@ -5,7 +5,8 @@
     "demos": [
       { "src": "transform-basic", "label": "Transform Basic" },
       { "src": "script-basic", "label": "Script Basic" },
-      { "src": "scene-basic", "label": "Scene Basic" }
+      { "src": "scene-basic", "label": "Scene Basic" },
+      { "src": "gltf-basic", "label": "GLTF Basic" }
     ]
   },
   {
