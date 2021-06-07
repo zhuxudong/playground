@@ -49,10 +49,7 @@
   {
     "group": "Texture",
     "src": "texture",
-    "demos": [
-      { "src": "video-texture", "label": "Video Texture" },
-      { "src": "wrap-mode", "label": "Wrap Mode" }
-    ]
+    "demos": [{ "src": "wrap-mode", "label": "Wrap Mode" }]
   },
   {
     "group": "Animation",
