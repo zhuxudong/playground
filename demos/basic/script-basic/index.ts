@@ -1,7 +1,3 @@
-/**
- * @title Rotate Script
- * @category Script
- */
 import { OrbitControl } from "@oasis-engine/controls";
 import { Camera, GLTFResource, Script, Vector3, WebGLEngine } from "oasis-engine";
 

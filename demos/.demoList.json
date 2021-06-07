@@ -4,7 +4,8 @@
     "src": "basic",
     "demos": [
       { "src": "transform-basic", "label": "Transform Basic" },
-      { "src": "script-basic", "label": "Script Basic" }
+      { "src": "script-basic", "label": "Script Basic" },
+      { "src": "scene-basic", "label": "Scene Basic" }
     ]
   },
   {
