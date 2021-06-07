@@ -56,7 +56,7 @@
     "src": "animation",
     "demos": [
       { "src": "skeleton-animation", "label": "Skeleton Animation" },
-      { "src": "cross-fade", "label": "Animation Cross Fade" }
+      { "src": "animation-cross-fade", "label": "Animation Cross Fade" }
     ]
   },
   {
