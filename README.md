@@ -15,6 +15,7 @@ Then, to build the source, using npm:
 ```sh
 npm run dev
 ```
+
 ## Contributing
 
 Everyone is welcome to join us! Whether you have found a bug or want to contribute a wonderful case.
@@ -29,4 +30,10 @@ After entering the name as prompted, you can start development in `/demos/{group
 
 _You need to execute `npm run dev` again after Adding demo._
 
+### Migrate to Website
 
+move all demos to [oasis website](https://oasisengine.cn/)
+
+```sh
+npm run migrate
+```
