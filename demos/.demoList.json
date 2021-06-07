@@ -64,7 +64,7 @@
     "src": "particle",
     "demos": [
       { "src": "particle-renderer", "label": "Particle Renderer" },
-      { "src": "sprite-sheet", "label": "Particle Sprite Sheet" }
+      { "src": "particle-sprite-sheet", "label": "Particle Sprite Sheet" }
     ]
   },
   { "group": "Spine", "src": "spine", "demos": [{ "src": "spine-animation", "label": "Spine Animation" }] },
