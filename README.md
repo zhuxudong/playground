@@ -29,11 +29,3 @@ npm run add-demo
 After entering the name as prompted, you can start development in `/demos/{group name}/{demo name}/index.ts`.
 
 _You need to execute `npm run dev` again after Adding demo._
-
-### Migrate to Website
-
-move all demos to [oasis website](https://oasisengine.cn/)
-
-```sh
-npm run migrate
-```
