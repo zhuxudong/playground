@@ -1,9 +1,7 @@
 import { OrbitControl } from "@oasis-engine/controls";
 import { Camera, GLTFResource, Script, Vector3, WebGLEngine } from "oasis-engine";
 
-// 创建画布
 const engine = new WebGLEngine("canvas");
-// 设置屏幕适配
 engine.canvas.resizeByClientSize();
 
 const rootEntity = engine.sceneManager.activeScene.createRootEntity();
@@ -16,7 +14,7 @@ cameraEntity.addComponent(OrbitControl);
 
 engine.sceneManager.activeScene.ambientLight.diffuseSolidColor.setValue(1, 1, 1, 1);
 
-// 旋转脚本组件
+// Create Rotate Script
 class Rotate extends Script {
   private _tempVector = new Vector3(0, 1, 0);
   onUpdate() {
@@ -31,7 +29,7 @@ engine.resourceManager
 
     rootEntity.addChild(duck);
 
-    // 添加旋转脚本组件
+    // Add Script
     duck.addComponent(Rotate);
   });
 
