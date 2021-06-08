@@ -30,7 +30,8 @@ engine.resourceManager
       opacity: 0
     };
 
-    let debugMaterials = materials.slice(1);
+    // Do not debug first material
+    const debugMaterials = materials.slice(1);
     gui.add(state, "alphaCutoff", 0, 1, 0.01).onChange((v) => {
       debugMaterials.forEach((material) => {
         (material as PBRMaterial).alphaCutoff = v;
