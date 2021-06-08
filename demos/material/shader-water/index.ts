@@ -10,7 +10,6 @@ import {
   PrimitiveMesh,
   Script,
   Shader,
-  SystemInfo,
   Texture2D,
   Vector3,
   WebGLEngine
@@ -18,9 +17,8 @@ import {
 
 const gui = new dat.GUI();
 //-- create engine object
-const engine = new WebGLEngine("o3-demo");
-engine.canvas.width = window.innerWidth * SystemInfo.devicePixelRatio;
-engine.canvas.height = window.innerHeight * SystemInfo.devicePixelRatio;
+const engine = new WebGLEngine("canvas");
+engine.canvas.resizeByClientSize();
 
 const scene = engine.sceneManager.activeScene;
 const rootEntity = scene.createRootEntity();
