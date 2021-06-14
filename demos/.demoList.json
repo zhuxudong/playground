@@ -10,6 +10,13 @@
     ]
   },
   {
+    "group": "Scene",
+    "src": "scene",
+    "demos": [
+      { "src": "background", "label": "Scene Background" }
+    ]
+  },
+  {
     "group": "Camera",
     "src": "camera",
     "demos": [

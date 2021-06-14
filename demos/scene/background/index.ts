@@ -11,7 +11,7 @@ import {
 
 import { OrbitControl } from "@oasis-engine/controls";
 
-const engine = new WebGLEngine("o3-demo");
+const engine = new WebGLEngine("canvas");
 const scene = engine.sceneManager.activeScene;
 const { background } = scene;
 const root = scene.createRootEntity();
