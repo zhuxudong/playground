@@ -22,7 +22,8 @@
     "demos": [
       { "src": "culling-mask", "label": "Culling Mask" },
       { "src": "controls-free", "label": "Free Controls" },
-      { "src": "renderer-cull", "label": "Renderer Cull" }
+      { "src": "renderer-cull", "label": "Renderer Cull" },
+      { "src": "ortho-control", "label": "Ortho Controls" }
     ]
   },
   {
