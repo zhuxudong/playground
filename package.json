@@ -21,9 +21,10 @@
   "license": "ISC",
   "dependencies": {
     "@oasis-engine/controls": "0.4.0-alpha.0",
-    "@oasis-engine/engine-spine": "^0.1.2",
     "@oasis-engine/framebuffer-picker": "0.4.0-alpha.0",
     "@oasis-engine/lottie": "^0.0.2",
+    "@oasis-engine/spine": "^0.0.2",
+    "@oasis-engine/stats": "^0.3.12",
     "dat.gui": "^0.7.7",
     "oasis-engine": "0.4.0-alpha.0"
   },
