@@ -19,7 +19,7 @@ import {
 } from "oasis-engine";
 Logger.enable();
 //-- create engine object
-const engine = new WebGLEngine("o3-demo", { alpha: true });
+const engine = new WebGLEngine("canvas");
 engine.canvas.resizeByClientSize();
 
 const scene = engine.sceneManager.activeScene;
