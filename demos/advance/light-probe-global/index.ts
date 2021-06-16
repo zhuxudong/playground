@@ -5,10 +5,7 @@ import {
   AssetType,
   BackgroundMode,
   Camera,
-  Color,
   DiffuseMode,
-  DirectLight,
-  Logger,
   MeshRenderer,
   PBRMaterial,
   PrimitiveMesh,
@@ -19,9 +16,7 @@ import {
   WebGLEngine
 } from "oasis-engine";
 
-Logger.enable();
-// create engine object
-let engine = new WebGLEngine("o3-demo");
+const engine = new WebGLEngine("canvas");
 engine.canvas.resizeByClientSize();
 
 let scene = engine.sceneManager.activeScene;

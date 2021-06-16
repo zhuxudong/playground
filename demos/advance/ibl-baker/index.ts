@@ -26,7 +26,7 @@ Logger.enable();
 
 const gui = new dat.GUI();
 //-- create engine object
-const engine = new WebGLEngine("o3-demo");
+const engine = new WebGLEngine("canvas");
 engine.canvas.resizeByClientSize();
 
 const scene = engine.sceneManager.activeScene;
