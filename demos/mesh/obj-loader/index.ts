@@ -3,6 +3,7 @@ import {
   BlinnPhongMaterial,
   Camera,
   Color,
+  DirectLight,
   MeshRenderer,
   MeshTopology,
   ModelMesh,
@@ -23,7 +24,7 @@ cameraEntity.transform.setPosition(0.5, 0.5, 0.5);
 cameraEntity.transform.lookAt(new Vector3(0, 0, 0));
 
 // init light
-scene.ambientLight.diffuseIntensity = 2;
+rootEntity.addComponent(DirectLight);
 
 fetch("https://gw.alipayobjects.com/os/bmw-prod/b885a803-5315-44f0-af54-6787ec47ed1b.obj")
   .then((res) => res.text())
