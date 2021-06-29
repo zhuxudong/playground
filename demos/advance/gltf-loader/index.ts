@@ -1,3 +1,4 @@
+import { IBLBaker, SphericalHarmonics3Baker } from "@oasis-engine/baker";
 import { OrbitControl } from "@oasis-engine/controls";
 import "@oasis-engine/stats";
 import * as dat from "dat.gui";
@@ -9,6 +10,7 @@ import {
   BoundingBox,
   Camera,
   Color,
+  DiffuseMode,
   DirectLight,
   Entity,
   GLTFResource,
@@ -23,6 +25,7 @@ import {
   Scene,
   SkinnedMeshRenderer,
   SkyBoxMaterial,
+  SphericalHarmonics3,
   Texture2D,
   TextureCubeMap,
   UnlitMaterial,
@@ -33,38 +36,102 @@ import {
 Logger.enable();
 
 const envList = {
-  sky: [
-    "https://gw.alipayobjects.com/mdn/rms_475770/afts/img/A*Gi7CTZqKuacAAAAAAAAAAABkARQnAQ",
-    "https://gw.alipayobjects.com/mdn/rms_475770/afts/img/A*iRRMQIExwKMAAAAAAAAAAABkARQnAQ",
-    "https://gw.alipayobjects.com/mdn/rms_475770/afts/img/A*ZIcPQZo20sAAAAAAAAAAAABkARQnAQ",
-    "https://gw.alipayobjects.com/mdn/rms_475770/afts/img/A*SPYuTbHT-KgAAAAAAAAAAABkARQnAQ",
-    "https://gw.alipayobjects.com/mdn/rms_475770/afts/img/A*mGUERbY77roAAAAAAAAAAABkARQnAQ",
-    "https://gw.alipayobjects.com/mdn/rms_475770/afts/img/A*ilkPS7A1_JsAAAAAAAAAAABkARQnAQ"
-  ],
-  house: [
-    "https://gw.alipayobjects.com/mdn/rms_475770/afts/img/A*1gjTQ7P2mQoAAAAAAAAAAABkARQnAQ",
-    "https://gw.alipayobjects.com/mdn/rms_475770/afts/img/A*entSR7DylL0AAAAAAAAAAABkARQnAQ",
-    "https://gw.alipayobjects.com/mdn/rms_475770/afts/img/A*izQBQY_vs_4AAAAAAAAAAABkARQnAQ",
-    "https://gw.alipayobjects.com/mdn/rms_475770/afts/img/A*x3XnRpq1U-EAAAAAAAAAAABkARQnAQ",
-    "https://gw.alipayobjects.com/mdn/rms_475770/afts/img/A*k7FsT5Gprn0AAAAAAAAAAABkARQnAQ",
-    "https://gw.alipayobjects.com/mdn/rms_475770/afts/img/A*8LdBQ6ixiQAAAAAAAAAAAABkARQnAQ"
-  ],
-  sunnyDay: [
-    "https://gw.alipayobjects.com/mdn/rms_475770/afts/img/A*4ZY8T4GpKwYAAAAAAAAAAABkARQnAQ",
-    "https://gw.alipayobjects.com/mdn/rms_475770/afts/img/A*8QbJQZwS1wUAAAAAAAAAAABkARQnAQ",
-    "https://gw.alipayobjects.com/mdn/rms_475770/afts/img/A*a54kSZ3LmAQAAAAAAAAAAABkARQnAQ",
-    "https://gw.alipayobjects.com/mdn/rms_475770/afts/img/A*8CbfTb1yG8MAAAAAAAAAAABkARQnAQ",
-    "https://gw.alipayobjects.com/mdn/rms_475770/afts/img/A*Yi4ZRZbdj8MAAAAAAAAAAABkARQnAQ",
-    "https://gw.alipayobjects.com/mdn/rms_475770/afts/img/A*KddxSriLYjoAAAAAAAAAAABkARQnAQ"
-  ],
-  miniSampler: [
-    "https://gw.alipayobjects.com/mdn/rms_475770/afts/img/A*IuyGR4bdwg4AAAAAAAAAAABkARQnAQ",
-    "https://gw.alipayobjects.com/mdn/rms_475770/afts/img/A*4rv5RZ0kll4AAAAAAAAAAABkARQnAQ",
-    "https://gw.alipayobjects.com/mdn/rms_475770/afts/img/A*cHitTpWoJjoAAAAAAAAAAABkARQnAQ",
-    "https://gw.alipayobjects.com/mdn/rms_475770/afts/img/A*RCEbS6k5x18AAAAAAAAAAABkARQnAQ",
-    "https://gw.alipayobjects.com/mdn/rms_475770/afts/img/A*IRc7R7cl4CcAAAAAAAAAAABkARQnAQ",
-    "https://gw.alipayobjects.com/mdn/rms_475770/afts/img/A*y_4hRYVgzQ4AAAAAAAAAAABkARQnAQ"
-  ]
+  pisa: {
+    url: "https://gw.alipayobjects.com/os/bmw-prod/20d58ffa-c7da-4c54-8980-4efaf91a0239.bin",
+    sh: [
+      0.7405009027663476,
+      0.6152777541362406,
+      0.5893459140482202,
+      -0.5061414505086134,
+      -0.4148798128777158,
+      -0.42583562442053374,
+      0.10504183272211508,
+      0.1414707769244594,
+      0.1699996574800679,
+      -0.03128483328182132,
+      -0.2563823751399767,
+      -0.4197049359557649,
+      -0.04435103113758944,
+      0.21157902441828688,
+      0.4073884162168059,
+      -0.10132855792645981,
+      -0.14073881739547114,
+      -0.16893176617828634,
+      -0.07201703807074067,
+      -0.060463311247316465,
+      -0.07074870891697528,
+      0.00881841215785982,
+      -0.11646488985686065,
+      -0.18965550935052364,
+      0.10238833750601119,
+      0.12167323921701262,
+      0.11155371275606216
+    ]
+  },
+  sunset: {
+    url: "https://gw.alipayobjects.com/os/bmw-prod/10c5d68d-8580-4bd9-8795-6f1035782b94.bin",
+    sh: [
+      1.8788462324918593,
+      1.7312828350173162,
+      2.192336144643786,
+      -0.6525031748653022,
+      -0.8654715759989732,
+      -1.4377779850288188,
+      -0.8416757486504501,
+      -0.41179952604695474,
+      -0.1938213424322001,
+      -1.3376251509896964,
+      -0.8442529811610728,
+      -0.6636745076744581,
+      0.4910727199644451,
+      0.34840739912192364,
+      0.28813369830776675,
+      0.32862785633745595,
+      0.19673766013799854,
+      0.10167597732474559,
+      0.13255842780633711,
+      0.11016791384190244,
+      0.05570034532455586,
+      1.0923561959080181,
+      0.5169269988464549,
+      0.29335295647453824,
+      1.0160477739941591,
+      0.4602609485053868,
+      0.0878602808986376
+    ]
+  },
+  footPrint_2K: {
+    url: "https://gw.alipayobjects.com/os/bmw-prod/59b28d9f-7589-4d47-86b0-52c50b973b10.bin",
+    sh: [
+      0.9687542498152497,
+      0.8642952361749543,
+      1.1220917426346586,
+      -0.4718369796416405,
+      -0.5397991432732735,
+      -0.9462693699732285,
+      -0.15286469850050968,
+      -0.07752369475657582,
+      -0.04905857735515553,
+      0.1341916356635085,
+      0.16934736284058194,
+      0.2611278420042872,
+      -0.02275563095055448,
+      -0.07216744409893389,
+      -0.20827018873955042,
+      0.08251185159673556,
+      0.062140305917642344,
+      0.07616440256571053,
+      0.04474019445789063,
+      -0.008735810819723378,
+      -0.05838848720104218,
+      -0.07444800058231346,
+      -0.09260760680277363,
+      -0.17038753295394837,
+      0.04033043274961273,
+      -0.1304004483509176,
+      -0.5465768311235262
+    ]
+  }
 };
 
 class Oasis {
@@ -80,7 +147,8 @@ class Oasis {
     return v;
   }
 
-  cubeTextures: Record<string, TextureCubeMap> = {};
+  hdrTextures: Record<string, TextureCubeMap> = {};
+  hdrSH: Record<string, SphericalHarmonics3> = {};
   textures: Record<string, Texture2D> = {};
 
   engine: WebGLEngine = new WebGLEngine("canvas");
@@ -108,7 +176,7 @@ class Oasis {
     // Scene
     background: false,
     // Lights
-    envTexture: "miniSampler",
+    envTexture: "sunset",
     envIntensity: 1,
     addLights: true,
     lightColor: Oasis.colorToGui(new Color(1, 1, 1)),
@@ -116,7 +184,7 @@ class Oasis {
     // GLTF Model List
     defaultGLTF: "clearCoat",
     gltfList: {
-      "clearCoat":"https://gw.alipayobjects.com/os/bmw-prod/53cbee74-7707-4870-a6cc-28ae9bcebab6.glb",
+      clearCoat: "https://gw.alipayobjects.com/os/bmw-prod/53cbee74-7707-4870-a6cc-28ae9bcebab6.glb",
       "2CylinderEngine": "https://gw.alipayobjects.com/os/bmw-prod/48a1e8b3-06b4-4269-807d-79274e58283a.glb",
       alphaBlendModeTest: "https://gw.alipayobjects.com/os/bmw-prod/d099b30b-59a3-42e4-99eb-b158afa8e65d.glb",
       animatedCube: "https://gw.alipayobjects.com/os/bmw-prod/8cc524dd-2481-438d-8374-3c933adea3b6.gltf",
@@ -188,17 +256,32 @@ class Oasis {
         .load(
           names.map((name) => {
             return {
-              type: AssetType.TextureCube,
-              urls: envList[name]
+              type: AssetType.HDR,
+              url: envList[name].url
             };
           })
         )
         .then((textures) => {
           (textures as any).forEach((texture: TextureCubeMap, index) => {
+            texture = IBLBaker.fromTextureCubeMap(texture) as any;
             const name = names[index];
-            this.cubeTextures[name] = texture;
+            this.hdrTextures[name] = texture;
+
+            if (envList[name].sh) {
+              this.hdrSH[name] = SphericalHarmonics3.fromArray(envList[name].sh);
+            } else {
+              const sh = new SphericalHarmonics3();
+              SphericalHarmonics3Baker.fromTextureCubeMap(texture, sh);
+              const out = [];
+              sh.toArray(out);
+              console.log(name, out);
+              this.hdrSH[name] = sh;
+            }
+
             if (name === this.state.envTexture) {
               this.scene.ambientLight.specularTexture = texture;
+              this.scene.ambientLight.diffuseMode = DiffuseMode.SphericalHarmonics;
+              this.scene.ambientLight.diffuseSphericalHarmonics = this.hdrSH[name];
               this.skyMaterial.textureCubeMap = texture;
             }
           });
@@ -252,11 +335,15 @@ class Oasis {
     // Lighting controls.
     const lightFolder = gui.addFolder("Lighting");
     lightFolder
-      .add(this.state, "envTexture", ["None", ...Object.keys(this.cubeTextures)])
+      .add(this.state, "envTexture", ["None", ...Object.keys(this.hdrTextures)])
       .name("IBL")
       .onChange((v) => {
         this.scene.ambientLight.specularTexture = this.skyMaterial.textureCubeMap =
-          v === "None" ? null : this.cubeTextures[v];
+          v === "None" ? null : this.hdrTextures[v];
+
+        this.scene.ambientLight.diffuseSphericalHarmonics = v === "None" ? null : this.hdrSH[v];
+
+        this.scene.ambientLight.diffuseMode = v === "None" ? DiffuseMode.SolidColor : DiffuseMode.SphericalHarmonics;
       });
     lightFolder
       .add(this.state, "envIntensity", 0, 2)
@@ -280,6 +367,9 @@ class Oasis {
         this.light1.intensity = this.light2.intensity = v;
       })
       .name("直接光强度");
+
+    dispFolder.open();
+    lightFolder.open();
   }
 
   setCenter(renderers: Renderer[]) {
