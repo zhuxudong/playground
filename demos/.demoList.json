@@ -101,8 +101,8 @@
     ]
   },
   {
-    "group": "Performance",
-    "src": "performance",
+    "group": "Benchmark",
+    "src": "benchmark",
     "demos": [
       { "src": "animation", "label": "Animation" },
       { "src": "spine-performance", "label": "Spine" }

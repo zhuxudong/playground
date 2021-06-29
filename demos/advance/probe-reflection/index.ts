@@ -49,7 +49,7 @@ background.mode = BackgroundMode.Sky;
 sky.material = skyMaterial;
 sky.mesh = PrimitiveMesh.createCuboid(engine, 1, 1, 1);
 
-async function loadModel() {
+function loadModel() {
   return Promise.all([
     engine.resourceManager
       .load<GLTFResource>("https://gw.alipayobjects.com/os/bmw-prod/83219f61-7d20-4704-890a-60eb92aa6159.gltf")
